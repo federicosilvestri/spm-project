@@ -111,4 +111,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+venv/
+.idea/
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,windows,c++
