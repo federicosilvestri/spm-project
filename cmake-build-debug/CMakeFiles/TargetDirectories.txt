@@ -1,0 +1,3 @@
+/home/federicosilvestri/CLionProjects/spm-project/cmake-build-debug/CMakeFiles/spm_project.dir
+/home/federicosilvestri/CLionProjects/spm-project/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/federicosilvestri/CLionProjects/spm-project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
