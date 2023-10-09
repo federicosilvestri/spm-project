@@ -7,6 +7,11 @@ add_executable(spm_project
         src/main.cpp
         src/seq/seq_impl.cpp
         src/seq/seq_impl.hpp
-        src/seq/stages/frequency_mapper.cpp
-        src/seq/stages/frequency_mapper.h
+        src/seq/stages/seq_freq_map.cpp
+        src/seq/stages/seq_freq_map.h
+        src/utils/file_utils.cpp
+        src/thr/thr_impl.cpp
+        src/thr/thr_impl.hpp
+        src/thr/stages/thr_freq_map.cpp
+        src/thr/stages/thr_freq_map.hpp
 )

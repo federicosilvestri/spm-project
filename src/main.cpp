@@ -6,6 +6,7 @@
 #include "utils/file_utils.hpp"
 
 #include "seq/seq_impl.hpp"
+#include "thr/thr_impl.hpp"
 
 using namespace std;
 
@@ -64,6 +65,7 @@ int main(int argc, char* argv[]) {
         seq_impl(in_file, out_file);
     } else if ("THR" == par_choice) {
         cout << "Starting THR implementation execution" << endl;
+        thr_impl(in_file, out_file, parallelism_degree);
     } else if ("FF" == par_choice) {
         cout << "Starting FF implementation execution" << endl;
     } else {
