@@ -3,6 +3,7 @@ import string
 from pathlib import Path
 from scipy.stats import norm
 import numpy as np
+import random
 
 #
 # - - - SETTING - - -
@@ -13,15 +14,26 @@ ALPHABET = string.ascii_letters + string.digits
 
 def generator(n_symbols: int, out_file: Path, uniform):
     if uniform:
-        distr = np.random.randint(low=0, high=len(ALPHABET) - 1, size=n_symbols, dtype=int)
+        gen_uniform(n_symbols, out_file)
     else:
-        # Generate normal random integers with specified mean (loc) and std (scale).
-        distr = norm.ppf(np.random.random(n_symbols), loc=0, scale=100).astype(int)
+        generate_normal(n_symbols, out_file)
 
-    with open(out_file, 'w') as fp:
+
+def generate_normal(n_symbols: int, out_file: Path):
+    # Generate normal random integers with specified mean (loc) and std (scale).
+    distr = norm.ppf(np.random.random(n_symbols), loc=0, scale=100).astype(int)
+    with open(out_file, 'wb') as fp:
         for i in distr:
             r = i % len(ALPHABET)
-            fp.write(ALPHABET[r])
+            fp.write(ALPHABET[r].encode('ascii'))
+
+
+def gen_uniform(n_symbols: int, out_file: Path):
+    with open(out_file, 'wb') as fp:
+        for i in range(0, n_symbols):
+            r = random.randrange(0, len(ALPHABET))
+            c = ALPHABET[r]
+            fp.write(c.encode('ascii'))
 
 
 def run():

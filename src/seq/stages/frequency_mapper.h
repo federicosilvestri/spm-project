@@ -1,0 +1,8 @@
+//
+// Created by Federico Silvestri on 09/10/23.
+//
+
+#ifndef SPM_PROJECT_FREQUENCY_MAPPER_H
+#define SPM_PROJECT_FREQUENCY_MAPPER_H
+
+#endif //SPM_PROJECT_FREQUENCY_MAPPER_H
