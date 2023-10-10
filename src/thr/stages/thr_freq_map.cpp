@@ -8,6 +8,7 @@
 #include "vector"
 #include "functional"
 #include "thread"
+#include "stdexcept"
 
 using namespace std;
 
@@ -48,14 +49,33 @@ combine_two_map(unordered_map<char, unsigned int> m1, unordered_map<char, unsign
     return m3;
 }
 
-unordered_map<char, unsigned int> combine_maps(vector<unordered_map<char, unsigned int>> &maps) {
-    unordered_map<char, unsigned int> combined_map = combine_two_map(maps[0], maps[1]);
-
-
-    for (int i = 2; i < maps.size(); i++) {
-        combined_map = combine_two_map(combined_map, maps[i]);
+unordered_map<char, unsigned int> reduce_maps(vector<unordered_map<char, unsigned int>> &maps) {
+    if (maps.empty()) {
+        throw invalid_argument("maps size cannot be empty!");
+    }
+    if (maps.size() == 1) {
+        return maps[0];
     }
 
+    vector<unordered_map<char, unsigned int>> reduced;
+    auto thr_num = (maps.size() % 2 == 0) ? maps.size() : maps.size() - 1;
+    vector<thread> thr_vec;
+    for (int i = 0; i < thr_num; i += 2) {
+        thr_vec.emplace_back(
+                thread(combine_two_map, maps[i], maps[i+1])
+        );
+    }
+
+    // add the results of thread inside the reduced vector.
+    for (int i = 0; i < thr_vec.size(); i++) {
+        thr_vec[i].join();
+    }
+
+    if (maps.size() % 2 != 0) {
+        reduced.push_back(maps[maps.size() - 1]);
+    }
+
+    unordered_map<char, unsigned int> combined_map = reduce_maps(reduced);
     return combined_map;
 }
 
@@ -123,7 +143,7 @@ unordered_map<char, unsigned int> thr_compute_frequencies(const string &file_inp
      * We know that combine(HM1, HM2) is a binary operation: we can use than a divide and conquer algorithm.
      */
 
-    m = combine_maps(vector_maps);
+    m = reduce_maps(vector_maps);
 
 #endif
 
