@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "string"
+#include "test/test_common.h"
 #include "utils/file_utils.hpp"
 
 #include "seq/seq_impl.hpp"
@@ -57,6 +58,11 @@ int main(int argc, char* argv[]) {
         cout << "Using PAR_DEGREE=" << parallelism_degree << endl;
     }
 
+    if (string(argv[1]) == "-T") {
+        // Special execution, it executes the internal FUNCTIONAL tests.
+        execute_test(argc, argv, in_file, out_file);
+        return 0;
+    }
 
     // Checking first argument before starting (parallelization method)
     string par_choice = argv[1];

@@ -8,6 +8,7 @@
 #include "vector"
 #include "functional"
 #include "thread"
+#include "future"
 #include "stdexcept"
 
 using namespace std;
@@ -58,17 +59,18 @@ unordered_map<char, unsigned int> reduce_maps(vector<unordered_map<char, unsigne
     }
 
     vector<unordered_map<char, unsigned int>> reduced;
-    auto thr_num = (maps.size() % 2 == 0) ? maps.size() : maps.size() - 1;
-    vector<thread> thr_vec;
-    for (int i = 0; i < thr_num; i += 2) {
-        thr_vec.emplace_back(
-                thread(combine_two_map, maps[i], maps[i+1])
-        );
+    // compute adjusted size of vector of partially reduced maps.
+    auto v_size = (maps.size() % 2 == 0) ? maps.size() : maps.size() - 1;
+    // v_size / 2 is the number of possible threads that will be spawned.
+    vector<future<unordered_map<char, unsigned int>>> futures_vec(v_size / 2);
+
+    for (int i = 0, j = 0; i < v_size; i += 2, j++) {
+        futures_vec[j] = std::async(std::launch::deferred, combine_two_map, maps[i], maps[i + 1]);
     }
 
     // add the results of thread inside the reduced vector.
-    for (int i = 0; i < thr_vec.size(); i++) {
-        thr_vec[i].join();
+    for (auto & fut : futures_vec) {
+        reduced.push_back(fut.get());
     }
 
     if (maps.size() % 2 != 0) {

@@ -14,4 +14,6 @@ add_executable(spm_project
         src/thr/thr_impl.hpp
         src/thr/stages/thr_freq_map.cpp
         src/thr/stages/thr_freq_map.hpp
+        src/test/test_common.h
+        src/test/test.cpp
 )
