@@ -5,25 +5,35 @@
 #include "string"
 #include "test/test_common.h"
 #include "utils/file_utils.hpp"
+#include "utils/Logger.hpp"
 
 #include "seq/seq_impl.hpp"
 #include "thr/thr_impl.hpp"
 
+// define the logging level, default to debug
+#define LOGGING_LEVEL "ERROR"
+
 using namespace std;
 
-void print_usage() {
-    cout << "Usage: huffman_enc SEQ|THR|FF <input_filepath> <output_filepath> [PAR_DEGREE: int]" << endl;
+void print_usage(const string &prg_name) {
+    cout << "Usage: " << prg_name << " SEQ|THR|FF|-T <input_filepath> <output_filepath> [PAR_DEGREE: int] [-M]" << endl;
     cout << "\tSEQ: is the sequential implementation," << endl;
     cout << "\tTHR: is the parallelized version using thread pools," << endl;
     cout << "\tFF: it the parallelized version using FastFlow." << endl;
+    cout << "\t-T: is a special command that executes functional tests." << endl << endl;
+    cout << "\t<input_filepath> is the file to compress." << endl;
+    cout << "\t<output_filepath> is the file to produce as compressed output." << endl << endl;
+    cout << "\tPAR_DEGREE is the parallelization degree that you want to use," << endl;
+    cout << "\t\tuse 0 for maximum degree or auto select." << endl;
+    cout << "\t-M enables the program to send to stdout the execution time." << endl;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     /*
      * The main is a simple switch between implementations.
      */
     if (argc < 4) {
-        print_usage();
+        print_usage(string(argv[0]));
         return 1;
     }
 
@@ -64,19 +74,31 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    // creating and initializing the logger object
+    auto logger = Logger::GetInstance();
+    auto log_level = logger->GetLogLevel(LOGGING_LEVEL);
+    logger->SetLogPreferences(log_level);
+
+    bool enable_measures = false;
+    if (argc == 6 && string(argv[5]) == "-M") {
+        // enable measurements
+        enable_measures = true;
+    }
+
     // Checking first argument before starting (parallelization method)
     string par_choice = argv[1];
     if ("SEQ" == par_choice) {
-        cout << "Starting SEQ execution" << endl;
-        seq_impl(in_file, out_file);
+        logger->Log("Starting SEQ execution", LogLevel::DEBUG);
+        seq_impl(in_file, out_file, enable_measures);
     } else if ("THR" == par_choice) {
-        cout << "Starting THR implementation execution" << endl;
-        thr_impl(in_file, out_file, parallelism_degree);
+        logger->Log("Starting THR implementation execution", LogLevel::DEBUG);
+        thr_impl(in_file, out_file, parallelism_degree, enable_measures);
     } else if ("FF" == par_choice) {
-        cout << "Starting FF implementation execution" << endl;
+        logger->Log("Starting FF implementation execution", LogLevel::DEBUG);
+        return 1; // not yet implemented
     } else {
         cerr << "The parallelization method is not supported." << endl;
-        print_usage();
+        print_usage(string(argv[0]));
     }
 
     return 0;

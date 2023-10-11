@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project(spm_project)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -16,4 +16,6 @@ add_executable(spm_project
         src/thr/stages/thr_freq_map.hpp
         src/test/test_common.h
         src/test/test.cpp
+        src/utils/Logger.cpp
+        src/utils/Logger.hpp
 )

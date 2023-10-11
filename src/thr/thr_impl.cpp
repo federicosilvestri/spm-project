@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void thr_impl(const std::string &file_input, const std::string &file_output, int p_degree) {
+void thr_impl(const std::string &file_input, const std::string &file_output, int p_degree, bool enable_measures) {
     /**
      * Native Thread implementation.
      */
@@ -22,13 +22,20 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
     } else {
         p = p_degree;
     }
+
     auto start = chrono::high_resolution_clock::now();
     auto m = thr_compute_frequencies(file_input, p);
-    auto end = chrono::high_resolution_clock::now() - start;
+    auto reading_time = chrono::high_resolution_clock::now() - start;
 
-    for (auto &g : m) {
-        cout << "CHAR=" << g.first << " FREQ=" << g.second << endl;
+    // other steps go here...
+
+    auto total_time = chrono::high_resolution_clock::now() - start;
+
+    /*
+     * Managing the output of measures.
+     */
+    if (enable_measures) {
+        cout << "READING=" << reading_time << endl;
+        cout << "TOTAL=" << total_time << endl;
     }
-
-    cout << "THR reading in " << end << endl;
 }

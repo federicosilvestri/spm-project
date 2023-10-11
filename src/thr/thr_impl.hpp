@@ -7,6 +7,6 @@
 
 #include "string"
 
-void thr_impl(const std::string &file_input, const std::string &file_output, int p_degree);
+void thr_impl(const std::string &file_input, const std::string &file_output, int p_degree, bool enable_measures);
 
 #endif //SPM_PROJECT_THR_IMPL_HPP

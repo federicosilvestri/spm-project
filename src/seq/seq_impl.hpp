@@ -7,6 +7,6 @@
 #include "string"
 
 
-void seq_impl(const std::string& file_input, const std::string& file_output);
+void seq_impl(const std::string& file_input, const std::string& file_output, bool enable_measures);
 
 #endif //SPM_PROJECT_SEQ_IMPL_HPP
