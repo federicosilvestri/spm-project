@@ -16,8 +16,8 @@
 using namespace std;
 
 void print_usage(const string &prg_name) {
-    cout << "Usage: " << prg_name << " SEQ|THR|FF|-T <input_filepath> <output_filepath> [PAR_DEGREE: int] [-M]" << endl;
-    cout << "\tSEQ: is the sequential implementation," << endl;
+    cout << "Usage: " << prg_name << " SEQ|THR|FF|-T <input_filepath> <output_filepath> <PAR_DEGREE: int> [-M]" << endl;
+    cout << "\tSEQ: is the sequential implementation (you should set PAR_DEGREE=0)," << endl;
     cout << "\tTHR: is the parallelized version using thread pools," << endl;
     cout << "\tFF: it the parallelized version using FastFlow." << endl;
     cout << "\t-T: is a special command that executes functional tests." << endl << endl;
@@ -32,10 +32,15 @@ int main(int argc, char *argv[]) {
     /*
      * The main is a simple switch between implementations.
      */
-    if (argc < 4) {
+    if (argc < 5) {
         print_usage(string(argv[0]));
         return 1;
     }
+
+    // creating and initializing the logger object
+    auto logger = Logger::GetInstance();
+    auto log_level = logger->GetLogLevel(LOGGING_LEVEL);
+    logger->SetLogPreferences(log_level);
 
     // Checking second and third argument (input and output files)
     string in_file = string(argv[2]);
@@ -51,33 +56,27 @@ int main(int argc, char *argv[]) {
         cout << "The file " << out_file << " already exist, overwriting it by default" << endl;
     }
 
-    // checking the parallelism degree input
-    int parallelism_degree = -1; // default value (it will be handled by implementations)
-    if (argc == 5) {
-        try {
-            parallelism_degree = stoi(argv[4]);
-        } catch (...) {
-            cerr << "The parallelism degree must be a number!" << endl;
-            return 1;
-        }
-        if (parallelism_degree <= 0) {
-            cerr << "The parallelism degree must be a number greater than 0!" << endl;
-            return 1;
-        }
+    // checking the parallelism degree input from user argument
+    int parallelism_degree;
 
-        cout << "Using PAR_DEGREE=" << parallelism_degree << endl;
+    try {
+        parallelism_degree = stoi(argv[4]);
+    } catch (...) {
+        cerr << "The parallelism degree must be a number!" << endl;
+        return 1;
     }
+    if (parallelism_degree < 0) {
+        cerr << "The parallelism degree must be a number greater or equal than 0!" << endl;
+        return 1;
+    }
+
+    logger->Log("User input PAR_DEGREE=" + to_string(parallelism_degree), LogLevel::DEBUG);
 
     if (string(argv[1]) == "-T") {
         // Special execution, it executes the internal FUNCTIONAL tests.
         execute_test(argc, argv, in_file, out_file);
         return 0;
     }
-
-    // creating and initializing the logger object
-    auto logger = Logger::GetInstance();
-    auto log_level = logger->GetLogLevel(LOGGING_LEVEL);
-    logger->SetLogPreferences(log_level);
 
     bool enable_measures = false;
     if (argc == 6 && string(argv[5]) == "-M") {
