@@ -13,12 +13,17 @@ RESULTS_FOLDER="results/"
 EXEC_N=5
 
 #
+# MINIMUM P_DEGREE (=1 by default)
+#
+MIN_P_DEGREE=1
+
+#
 # Maximum P_DEGREE
 #
 MAX_P_DEGREE=20
 
 #
-# Degree step (1 is the best)
+# Degree step (1 is the best, more granular)
 #
 P_DEGREE_STEP=1
 
@@ -54,7 +59,7 @@ rm $SEQ_TEMP_RESULT_FILE
 echo "SEQ benchmark finished"
 
 echo "Starting THR benchmark"
-for ((p=1; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
+for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
   echo "P_DEGREE = $p"
   THR_TEMP_RESULT_FILE="$RESULTS_FOLDER/thr_$p.temp.txt"
   for ((i=0; i<EXEC_N;i++)); do
@@ -64,6 +69,12 @@ for ((p=1; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
   ## parse the file into csv
   python b_tools/output_parser.py $THR_TEMP_RESULT_FILE "$RESULTS_FOLDER/thr_$p.csv"
   rm $THR_TEMP_RESULT_FILE
-  echo "Done!"
+  echo -e "\nDone!"
+done
+echo "Merging files"
+python b_tools/merge_results.py "$RESULTS_FOLDER/thr_" "$MIN_P_DEGREE" "$MAX_P_DEGREE" "$P_DEGREE_STEP" "$RESULTS_FOLDER/thr.csv"
+echo "Deleting temp files..."
+for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
+  rm "$RESULTS_FOLDER/thr_$p.csv"
 done
 echo "SEQ benchmark finished"

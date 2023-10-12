@@ -30,17 +30,24 @@ def parse_file(in_file: Path, out_file: Path) -> None:
     with open(out_file, 'w') as fp:
         # write header
         line = ""
-        for key, _ in results[0].items():
-            line += key + ","
+        for ix, (key, _) in enumerate(results[0].items()):
+            if ix != 0:
+                line += ","
+            line += key
         line += "\n"
         fp.write(line)
 
         # write data
-        for row in results:
-            line = ""
-            for _, value in row.items():
-                line += value + ","
-            fp.write(line + "\n")
+        for rx, row in enumerate(results):
+            if rx != 0:
+                line = "\n"
+            else:
+                line = ""
+            for ix, (_, value) in enumerate(row.items()):
+                if ix != 0:
+                    line += ","
+                line += value
+            fp.write(line)
 
 
 if __name__ == '__main__':
