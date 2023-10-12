@@ -8,7 +8,7 @@
 # OUTL_THR = 3
 #
 #
-# def prepare_seq_measures(measure_file: str = 'results/sequential.csv'):
+# def prepare_seq_measures(measure_file: str):
 #     data = get_standardized_measures(Path(measure_file))
 #     z_scores = np.abs(stats.zscore(data))
 #     data = data[(z_scores < OUTL_THR).all(axis=1)]
