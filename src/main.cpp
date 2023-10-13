@@ -5,7 +5,7 @@
 #include "string"
 #include "test/test_common.h"
 #include "utils/file_utils.hpp"
-#include "utils/Logger.hpp"
+#include "utils/logger.hpp"
 
 #include "seq/seq_impl.hpp"
 #include "thr/thr_impl.hpp"

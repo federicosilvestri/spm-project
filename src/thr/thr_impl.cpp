@@ -4,6 +4,7 @@
 
 #include "thr_impl.hpp"
 #include "stages/thr_freq_map.hpp"
+#include "../common/huffman_builder.hpp"
 #include "thread"
 #include "iostream"
 #include "chrono"
@@ -24,9 +25,12 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
     }
 
     auto start = chrono::high_resolution_clock::now();
-    auto m = thr_compute_frequencies(file_input, p);
+    auto freq_map = thr_compute_frequencies(file_input, p);
     auto reading_time = chrono::high_resolution_clock::now() - start;
-
+    auto start2 = chrono::high_resolution_clock::now();
+    auto huff_tree = build_huffman_tree(freq_map);
+    auto huff_map = build_huffman_map(huff_tree);
+    auto huff_time = chrono::high_resolution_clock::now() - start2;
     // other steps go here...
 
     auto total_time = chrono::high_resolution_clock::now() - start;
@@ -36,6 +40,7 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
      */
     if (enable_measures) {
         cout << "READING=" << reading_time << endl;
+        cout << "HUFFBUILD=" << huff_time << endl;
         cout << "TOTAL=" << total_time << endl;
     }
 }

@@ -16,6 +16,10 @@ add_executable(spm_project
         src/thr/stages/thr_freq_map.hpp
         src/test/test_common.h
         src/test/test.cpp
-        src/utils/Logger.cpp
-        src/utils/Logger.hpp
+        src/utils/logger.cpp
+        src/utils/logger.hpp
+        src/common/huffman_tree.cpp
+        src/common/huffman_tree.hpp
+        src/common/huffman_builder.cpp
+        src/common/huffman_builder.hpp
 )

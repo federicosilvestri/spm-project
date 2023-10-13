@@ -18,7 +18,7 @@
 // limitations under the License.
 */
 
-#include "Logger.hpp"
+#include "logger.hpp"
 
 std::shared_ptr<Logger> Logger::loggerInstance;
 
