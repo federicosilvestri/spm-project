@@ -5,6 +5,7 @@
 #include "../seq/stages/seq_freq_map.h"
 #include "../thr/stages/thr_freq_map.hpp"
 #include "../common/huffman_builder.hpp"
+#include "../seq/stages/seq_encoding.hpp"
 
 #define STATIC_PARALLELISM_DEGREE 4
 
@@ -39,11 +40,23 @@ int test_huffman_build(string file_input) {
     return 0;
 }
 
+int test_huffman_encoding(string file_input) {
+    auto freq_map = seq_compute_frequencies(file_input);
+    auto huff_tree = build_huffman_tree(freq_map);
+    auto huff_map = build_huffman_map(huff_tree);
+    auto encoded_bin = seq_encode(huff_map, file_input);
+
+    CHK_EQ(encoded_bin.size() % 8, 0);
+
+    return 0;
+}
+
 void execute_test(int argc, char **argv, string file_input, string file_out) {
     TestSuite test(argc, argv);
 
 
     test.doTest("Functional testing for stage: READING", test_functional_reading, file_input);
-    test.doTest("Function testing for stafe: HUFF_BUILD", test_huffman_build, file_input);
+    test.doTest("Functional testing for stage: HUFFBUILD", test_huffman_build, file_input);
+    test.doTest("Functional testing for stage: ENCODING", test_huffman_encoding, file_input);
 
 }
