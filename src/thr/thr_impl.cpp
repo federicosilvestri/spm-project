@@ -7,7 +7,7 @@
 #include "../common/huffman_builder.hpp"
 #include "thread"
 #include "iostream"
-#include "chrono"
+#include "../utils/my_timer.hpp"
 
 using namespace std;
 
@@ -24,23 +24,23 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
         p = p_degree;
     }
 
-    auto start = chrono::high_resolution_clock::now();
+    MyTimer timer;
+    timer.start("READING");
     auto freq_map = thr_compute_frequencies(file_input, p);
-    auto reading_time = chrono::high_resolution_clock::now() - start;
-    auto start2 = chrono::high_resolution_clock::now();
+    timer.stop();
+
+    timer.start("HUFFBUILD");
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
-    auto huff_time = chrono::high_resolution_clock::now() - start2;
+    timer.stop();
+
     // other steps go here...
 
-    auto total_time = chrono::high_resolution_clock::now() - start;
 
     /*
      * Managing the output of measures.
      */
     if (enable_measures) {
-        cout << "READING=" << reading_time << endl;
-        cout << "HUFFBUILD=" << huff_time << endl;
-        cout << "TOTAL=" << total_time << endl;
+        timer.print_timings();
     }
 }

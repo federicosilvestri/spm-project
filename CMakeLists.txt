@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(spm_project)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_C_COMPILER gcc)
+#set(CMAKE_CXX_COMPILER g++)
+#set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
+#set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -DDEBUG")
+#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+#set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 add_executable(spm_project
         src/main.cpp
@@ -9,7 +15,6 @@ add_executable(spm_project
         src/seq/seq_impl.hpp
         src/seq/stages/seq_freq_map.cpp
         src/seq/stages/seq_freq_map.h
-        src/utils/file_utils.cpp
         src/thr/thr_impl.cpp
         src/thr/thr_impl.hpp
         src/thr/stages/thr_freq_map.cpp
@@ -26,4 +31,6 @@ add_executable(spm_project
         src/seq/stages/seq_encoding.hpp
         src/common/file_writer.cpp
         src/common/file_writer.hpp
+        src/utils/my_timer.cpp
+        src/utils/my_timer.hpp
 )

@@ -11,11 +11,12 @@
 #include "unordered_map"
 #include "iostream"
 
+std::unordered_map<char, unsigned int> thr_compute_frequencies(const std::string &file_input, unsigned int p_degree);
+
 inline void debug_map(std::unordered_map<char, unsigned int> m) {
     for (auto &r : m) {
         std::cout << "CHAR=" << r.first << " FREQ=" << r.second << std::endl;
     }
 }
-std::unordered_map<char, unsigned int> thr_compute_frequencies(const std::string &file_input, unsigned int p_degree);
 
 #endif //SPM_PROJECT_THR_FREQUENCY_MAPPER_HPP

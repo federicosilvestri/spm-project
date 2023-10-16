@@ -21,7 +21,7 @@ freq_worker(const string &file_input, unsigned int start, unsigned int end, unor
         char c;
         fp.get(c);
 
-        if (f_map.contains(c)) {
+        if (f_map.count(c)) {
             f_map.at(c) += 1;
         } else {
             f_map.insert({c, 1});
@@ -34,14 +34,14 @@ unordered_map<char, unsigned int>
 combine_two_map(unordered_map<char, unsigned int> m1, unordered_map<char, unsigned int> m2) {
     unordered_map<char, unsigned int> m3;
     for (auto &p: m1) {
-        if (m3.contains(p.first)) {
+        if (m3.count(p.first)) {
             m3.at(p.first) += p.second;
         } else {
             m3.insert(p);
         }
     }
     for (auto &p: m2) {
-        if (m3.contains(p.first)) {
+        if (m3.count(p.first)) {
             m3.at(p.first) += p.second;
         } else {
             m3.insert(p);

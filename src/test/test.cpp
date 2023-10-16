@@ -11,7 +11,8 @@
 
 using namespace std;
 
-int test_functional_reading(string file_input) {
+
+int test_functional_reading(string &file_input) {
     auto m1 = seq_compute_frequencies(file_input);
     auto m2 = thr_compute_frequencies(file_input, 1);
 
@@ -23,24 +24,24 @@ int test_functional_reading(string file_input) {
 }
 
 
-int test_huffman_build(string file_input) {
+int test_huffman_build(string &file_input) {
     auto freq_map = seq_compute_frequencies(file_input);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
 
     // checking maps
     CHK_TRUE(freq_map.size() == huff_map.size())
-    for (auto &p : freq_map) {
-        CHK_TRUE(huff_map.contains(p.first));
+    for (auto &p: freq_map) {
+        CHK_TRUE(huff_map.count(p.first));
     }
-    for (auto &p : huff_map) {
-        CHK_TRUE(freq_map.contains(p.first));
+    for (auto &p: huff_map) {
+        CHK_TRUE(freq_map.count(p.first));
     }
 
     return 0;
 }
 
-int test_huffman_encoding(string file_input) {
+int test_huffman_encoding(string &file_input) {
     auto freq_map = seq_compute_frequencies(file_input);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
@@ -51,9 +52,8 @@ int test_huffman_encoding(string file_input) {
     return 0;
 }
 
-void execute_test(int argc, char **argv, string file_input, string file_out) {
+void execute_test(int argc, char **argv, string &file_input, string &file_out) {
     TestSuite test(argc, argv);
-
 
     test.doTest("Functional testing for stage: READING", test_functional_reading, file_input);
     test.doTest("Functional testing for stage: HUFFBUILD", test_huffman_build, file_input);

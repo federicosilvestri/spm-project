@@ -25,7 +25,7 @@ string seq_encode(unordered_map<char, string> huff_map, const string &file_input
     if (file_stream.is_open()) {
         char c;
         while (file_stream.get(c)) {
-            if (!huff_map.contains(c)) {
+            if (!huff_map.count(c)) {
                 throw invalid_argument("The Huffman map does not contain this character");
             }
             encoded.append(huff_map.at(c));

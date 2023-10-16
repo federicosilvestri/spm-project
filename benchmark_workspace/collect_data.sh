@@ -110,7 +110,7 @@ for ((s=MIN_FILE_SIZE; s<=MAX_FILE_SIZE; s+=FILE_SIZE_STEP)); do
   for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
     rm "$RESULTS_FOLDER/thr_$p.csv"
   done
-  echo "SEQ benchmark finished"
+  echo "THR benchmark finished"
 
 
   #

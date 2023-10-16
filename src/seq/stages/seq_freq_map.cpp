@@ -20,7 +20,7 @@ unordered_map<char, unsigned int> seq_compute_frequencies(const string& file_inp
     if (file_stream.is_open()) {
         char key;
         while (file_stream.get(key)) {
-            if (frequency_map.contains(key)) {
+            if (frequency_map.count(key)) {
                 frequency_map.at(key) += 1;
             } else {
                 frequency_map.insert({key, 1});
