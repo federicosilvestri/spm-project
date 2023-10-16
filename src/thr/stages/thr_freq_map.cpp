@@ -69,7 +69,7 @@ unordered_map<char, unsigned int> reduce_maps(vector<unordered_map<char, unsigne
     }
 
     // add the results of thread inside the reduced vector.
-    for (auto & fut : futures_vec) {
+    for (auto &fut: futures_vec) {
         reduced.push_back(fut.get());
     }
 
@@ -127,9 +127,11 @@ unordered_map<char, unsigned int> thr_compute_frequencies(const string &file_inp
         unsigned int start = i * chunk_size;
         unsigned int end = start + chunk_size - 1;
 
-        if (end > f_size) {
+        if (i == p_degree - 1) {
             // the last thread may be unbalanced, we can use autoscheduling or jobstealing (autoscheduling can be implemented
             // by pushing task inside a queue).
+            end = f_size;
+            end -= 1;
         }
         vector_maps[i] = v_map;
         threads_c[i] = thread(freq_worker, file_input, start, end, std::ref(vector_maps[i]));

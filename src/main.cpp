@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (file_exists(out_file)) {
-        cout << "The file " << out_file << " already exist, overwriting it by default" << endl;
+        logger->Log("The file already exist, overwriting it by default", LogLevel::DEBUG);
     }
 
     // checking the parallelism degree input from user argument

@@ -29,12 +29,11 @@ string seq_encode(unordered_map<char, string> huff_map, const string &file_input
                 throw invalid_argument("The Huffman map does not contain this character");
             }
             encoded.append(huff_map.at(c));
-            file_stream.close();
         }
     } else {
-        cerr << "Cannot read file!" << endl;
-        exit(1);
+        throw invalid_argument("Cannot read input file!");
     }
+    file_stream.close();
 
     padding(&encoded);
     return encoded;

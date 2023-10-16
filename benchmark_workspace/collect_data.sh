@@ -41,6 +41,10 @@ MAX_FILE_SIZE=100
 #
 FILE_SIZE_STEP=50
 
+
+# Output file
+FILE_OUT="$FILE_OUT_FOLDER/out.txt";
+
 # The compiled program must be here and must be named spm_project
 if [ ! -f "spm_project" ]; then
     echo "Cannot find the executable file"

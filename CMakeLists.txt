@@ -26,7 +26,7 @@ add_executable(spm_project
         src/common/huffman_tree.cpp
         src/common/huffman_tree.hpp
         src/common/huffman_builder.cpp
-        src/common/huffman_builder.hpp
+        src/common/huffman_map.hpp
         src/seq/stages/seq_encoding.cpp
         src/seq/stages/seq_encoding.hpp
         src/common/file_writer.cpp

@@ -2,10 +2,9 @@
 // Created by federicosilvestri on 13/10/23.
 //
 
-#include "huffman_builder.hpp"
+#include "huffman_map.hpp"
 #include "vector"
 #include "queue"
-#include "iostream"
 
 using namespace std;
 
@@ -44,6 +43,7 @@ HuffNode *build_huffman_tree(unordered_map<char, unsigned int> &data_map) {
 
 void encode_tree(HuffNode *node, string partial_enc, unordered_map<char, string> &map) {
     // DFS Recursive algorithm
+    // TODO si può parallelizzare, mettendo la map con lock e facendo l'algoritmo non ricorsivo
 
     if (node == nullptr) {
         // we reached the end of the tree
@@ -60,8 +60,8 @@ void encode_tree(HuffNode *node, string partial_enc, unordered_map<char, string>
     encode_tree(node->get_right(), partial_enc + "1", map);
 }
 
-unordered_map<char, string> build_huffman_map(HuffNode *tree) {
-    unordered_map<char, string> huff_map;
+HuffMap build_huffman_map(HuffNode *tree) {
+    HuffMap huff_map;
     string encoded_string;
 
     encode_tree(tree, encoded_string, huff_map);

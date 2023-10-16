@@ -7,7 +7,7 @@
 #include "../utils/my_timer.hpp"
 
 #include "stages/seq_freq_map.h"
-#include "../common/huffman_builder.hpp"
+#include "../common/huffman_map.hpp"
 #include "stages/seq_encoding.hpp"
 #include "../common/file_writer.hpp"
 

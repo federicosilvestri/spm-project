@@ -2,10 +2,16 @@
 // Created by federicosilvestri on 13/10/23.
 //
 
-#ifndef SPM_PROJECT_HUFFMAN_BUILDER_HPP
-#define SPM_PROJECT_HUFFMAN_BUILDER_HPP
+#ifndef SPM_PROJECT_HUFFMAN_MAP_HPP
+#define SPM_PROJECT_HUFFMAN_MAP_HPP
 #include "huffman_tree.hpp"
 #include "unordered_map"
+#include "iostream"
+
+/**
+ * @brief Here I define for simplicity a new type for HuffMap.
+ */
+typedef std::unordered_map<char, std::string> HuffMap;
 
 /**
  * @brief Build the Huffman tree
@@ -18,8 +24,7 @@ HuffNode* build_huffman_tree(std::unordered_map<char, unsigned int> &data_map);
  * @brief Builds an hashmap that contains the pair <character, encoded_string>
  * @param tree The Huffman tree
  * @return Unordered Map (HashMap) of <char, string>
- * @TODO https://stackoverflow.com/questions/3806469/bit-array-in-c
  */
-std::unordered_map<char, std::string> build_huffman_map(HuffNode* tree);
+HuffMap build_huffman_map(HuffNode* tree);
 
-#endif //SPM_PROJECT_HUFFMAN_BUILDER_HPP
+#endif //SPM_PROJECT_HUFFMAN_MAP_HPP

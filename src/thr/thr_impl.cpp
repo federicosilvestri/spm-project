@@ -4,9 +4,8 @@
 
 #include "thr_impl.hpp"
 #include "stages/thr_freq_map.hpp"
-#include "../common/huffman_builder.hpp"
+#include "../common/huffman_map.hpp"
 #include "thread"
-#include "iostream"
 #include "../utils/my_timer.hpp"
 
 using namespace std;
@@ -24,18 +23,21 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
         p = p_degree;
     }
 
+    // Declaring the timer
     MyTimer timer;
+
+    // STAGE 0: reading
     timer.start("READING");
     auto freq_map = thr_compute_frequencies(file_input, p);
     timer.stop();
 
+    // STAGE 1: build the Huffman tree and Huffman Map
     timer.start("HUFFBUILD");
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
     timer.stop();
 
-    // other steps go here...
-
+    // other steps goes here...
 
     /*
      * Managing the output of measures.
