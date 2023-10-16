@@ -5,10 +5,10 @@
 #ifndef SPM_PROJECT_SEQ_ENCODING_HPP
 #define SPM_PROJECT_SEQ_ENCODING_HPP
 #include "string"
-#include "unordered_map"
+#include "../../common/huffman_map.hpp"
 
 // to be commented, but it's a function
 // that encode a string into a binary string
-std::string seq_encode(std::unordered_map<char, std::string> huff_map, const std::string &file_input);
+std::string seq_encode(HuffMap huff_map, const std::string &file_input);
 
 #endif //SPM_PROJECT_SEQ_ENCODING_HPP

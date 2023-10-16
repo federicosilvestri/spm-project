@@ -8,6 +8,10 @@
 #include "thread"
 #include "../utils/my_timer.hpp"
 
+// TODO to be removed
+#include "../seq/stages/seq_encoding.hpp"
+#include "../common/file_writer.hpp"
+
 using namespace std;
 
 void thr_impl(const std::string &file_input, const std::string &file_output, int p_degree, bool enable_measures) {
@@ -35,6 +39,16 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
     timer.start("HUFFBUILD");
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
+    timer.stop();
+
+    // STAGE 2: Encoding the file into memory
+    timer.start("ENCODING");
+    auto encoded_binary = seq_encode(huff_map, file_input);
+    timer.stop();
+
+    // STAGE 3: Writing into fs
+    timer.start("WRITING");
+    write_compressed_file(encoded_binary, file_output);
     timer.stop();
 
     // other steps goes here...

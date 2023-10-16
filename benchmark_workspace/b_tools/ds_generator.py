@@ -52,7 +52,7 @@ def run():
     args = parser.parse_args()
 
     # call the generator
-    n_symbols: int = args.n_symbols * 10000 if args.M else args.n_symbols
+    n_symbols: int = args.n_symbols * 10**6 if args.M else args.n_symbols
     print(f"Generating a file with {n_symbols} symbols into file {args.output}")
     print("Distribution is " + ("uniform" if args.uniform else "~gaussian"))
     generator(n_symbols=n_symbols, out_file=Path(args.output), uniform=args.uniform)

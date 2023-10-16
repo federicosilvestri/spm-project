@@ -29,17 +29,17 @@ P_DEGREE_STEP=1
 #
 # Minimum file size (in millions of characters)
 #
-MIN_FILE_SIZE=50
+MIN_FILE_SIZE=10
 
 #
 # Maximum file size (in millions of characters)
 #
-MAX_FILE_SIZE=100
+MAX_FILE_SIZE=10
 
 #
 # File size step
 #
-FILE_SIZE_STEP=50
+FILE_SIZE_STEP=10
 
 
 # Output file

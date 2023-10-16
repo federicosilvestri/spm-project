@@ -17,7 +17,7 @@ void padding(string *binary) {
     }
 }
 
-string seq_encode(unordered_map<char, string> huff_map, const string &file_input) {
+string seq_encode(HuffMap huff_map, const string &file_input) {
     string encoded;
     ifstream file_stream;
     file_stream.open(file_input, ios::in);

@@ -8,12 +8,12 @@
 
 using namespace std;
 
-unordered_map<char, unsigned int> seq_compute_frequencies(const string& file_input) {
+FrequencyMap seq_compute_frequencies(const string &file_input) {
     /**
      * Here we start the first stage of algorithm by computing,
      * character by character, an hashmap (unordered) of char and its own frequency.
      */
-    unordered_map<char, unsigned int> frequency_map;
+    FrequencyMap frequency_map;
     ifstream file_stream;
     file_stream.open(file_input, ios::in);
 
@@ -28,8 +28,7 @@ unordered_map<char, unsigned int> seq_compute_frequencies(const string& file_inp
         }
         file_stream.close();
     } else {
-        cerr << "Cannot read file!" << endl;
-        exit(1);
+        throw invalid_argument("Cannot read the input file!");
     }
 
     /*

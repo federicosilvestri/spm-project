@@ -8,15 +8,15 @@
 // #define GMR_IMP if you want to enable Google Map Reduce
 
 #include "string"
-#include "unordered_map"
+#include "../../common/frequency.hpp"
 #include "iostream"
 
-std::unordered_map<char, unsigned int> thr_compute_frequencies(const std::string &file_input, unsigned int p_degree);
-
-inline void debug_map(std::unordered_map<char, unsigned int> m) {
-    for (auto &r : m) {
-        std::cout << "CHAR=" << r.first << " FREQ=" << r.second << std::endl;
-    }
-}
+/**
+ * @brief Compute the frequencies for each character in a given input text file.
+ * @param file_input the input file
+ * @param p_degree degree of parallelism
+ * @return the computed map of char and its frequency
+ */
+FrequencyMap thr_compute_frequencies(const std::string &file_input, unsigned int p_degree);
 
 #endif //SPM_PROJECT_THR_FREQUENCY_MAPPER_HPP

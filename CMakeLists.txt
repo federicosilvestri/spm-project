@@ -33,4 +33,5 @@ add_executable(spm_project
         src/common/file_writer.hpp
         src/utils/my_timer.cpp
         src/utils/my_timer.hpp
+        src/common/frequency.hpp
 )

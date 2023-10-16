@@ -14,7 +14,7 @@
 using namespace std;
 
 void
-freq_worker(const string &file_input, unsigned int start, unsigned int end, unordered_map<char, unsigned int> &f_map) {
+freq_worker(const string &file_input, unsigned int start, unsigned int end, FrequencyMap &f_map) {
     ifstream fp(file_input);
     fp.seekg(start);
     for (auto i = 0; i <= (end - start); i++) {
@@ -30,8 +30,8 @@ freq_worker(const string &file_input, unsigned int start, unsigned int end, unor
     fp.close();
 }
 
-unordered_map<char, unsigned int>
-combine_two_map(unordered_map<char, unsigned int> m1, unordered_map<char, unsigned int> m2) {
+FrequencyMap
+combine_two_map(FrequencyMap m1, FrequencyMap m2) {
     unordered_map<char, unsigned int> m3;
     for (auto &p: m1) {
         if (m3.count(p.first)) {
@@ -50,7 +50,7 @@ combine_two_map(unordered_map<char, unsigned int> m1, unordered_map<char, unsign
     return m3;
 }
 
-unordered_map<char, unsigned int> reduce_maps(vector<unordered_map<char, unsigned int>> &maps) {
+FrequencyMap reduce_maps(FrequencyVector &maps) {
     if (maps.empty()) {
         throw invalid_argument("maps size cannot be empty!");
     }
@@ -58,11 +58,11 @@ unordered_map<char, unsigned int> reduce_maps(vector<unordered_map<char, unsigne
         return maps[0];
     }
 
-    vector<unordered_map<char, unsigned int>> reduced;
+    FrequencyVector reduced;
     // compute adjusted size of vector of partially reduced maps.
     auto v_size = (maps.size() % 2 == 0) ? maps.size() : maps.size() - 1;
     // v_size / 2 is the number of possible threads that will be spawned.
-    vector<future<unordered_map<char, unsigned int>>> futures_vec(v_size / 2);
+    vector<future<FrequencyMap>> futures_vec(v_size / 2);
 
     for (int i = 0, j = 0; i < v_size; i += 2, j++) {
         futures_vec[j] = std::async(std::launch::deferred, combine_two_map, maps[i], maps[i + 1]);
@@ -77,12 +77,12 @@ unordered_map<char, unsigned int> reduce_maps(vector<unordered_map<char, unsigne
         reduced.push_back(maps[maps.size() - 1]);
     }
 
-    unordered_map<char, unsigned int> combined_map = reduce_maps(reduced);
+    FrequencyMap combined_map = reduce_maps(reduced);
     return combined_map;
 }
 
-unordered_map<char, unsigned int> thr_compute_frequencies(const string &file_input, unsigned int p_degree) {
-    unordered_map<char, unsigned int> m;
+FrequencyMap thr_compute_frequencies(const string &file_input, unsigned int p_degree) {
+    FrequencyMap m;
 #ifdef GMR
     /*
      * GOOGLE MAP REDUCE SIMPLE IDEA:
@@ -119,7 +119,7 @@ unordered_map<char, unsigned int> thr_compute_frequencies(const string &file_inp
 
     // cout << "File is " << f_size << "large";
     vector<thread> threads_c(p_degree);
-    vector<unordered_map<char, unsigned int>> vector_maps(p_degree);
+    FrequencyVector vector_maps(p_degree);
 
 
     for (auto i = 0; i < p_degree; i++) {
