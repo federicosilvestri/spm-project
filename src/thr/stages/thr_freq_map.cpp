@@ -2,7 +2,6 @@
 // Created by federicosilvestri on 09/10/23.
 //
 
-#include "iostream"
 #include "fstream"
 #include "thr_freq_map.hpp"
 #include "vector"

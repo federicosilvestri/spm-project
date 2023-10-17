@@ -1,15 +1,13 @@
 //
 // Created by federicosilvestri on 09/10/23.
 //
-
 #include "thr_impl.hpp"
+#include "thread"
+#include "../utils/my_timer.hpp"
 #include "stages/thr_freq_map.hpp"
 #include "../common/huffman_map.hpp"
 #include "stages/thr_mapping.hpp"
-#include "thread"
-#include "../utils/my_timer.hpp"
-
-// TODO to be removed
+#include "stages/thr_transform.hpp"
 #include "../common/file_writer.hpp"
 
 using namespace std;
@@ -48,16 +46,13 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 3: transform the EncodedChunk to ascii
     timer.start("TRANSFORM");
-    // TODO
+    auto char_stream = thr_transform(encoded_chunks);
     timer.stop();
 
-
     // STAGE 4: Writing into fs
-//    timer.start("WRITING");
-//    write_compressed_file(encoded_binary, file_output);
-//    timer.stop();
-
-    // other steps goes here...
+    timer.start("WRITING");
+    write_compressed_file(char_stream, file_output);
+    timer.stop();
 
     /*
      * Managing the output of measures.

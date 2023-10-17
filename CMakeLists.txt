@@ -38,4 +38,6 @@ add_executable(spm_project
         src/thr/stages/thr_mapping.hpp
         src/seq/stages/seq_transform.cpp
         src/seq/stages/seq_transform.hpp
+        src/thr/stages/thr_transform.cpp
+        src/thr/stages/thr_transform.hpp
 )
