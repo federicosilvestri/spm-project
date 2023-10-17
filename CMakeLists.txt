@@ -27,11 +27,15 @@ add_executable(spm_project
         src/common/huffman_tree.hpp
         src/common/huffman_builder.cpp
         src/common/huffman_map.hpp
-        src/seq/stages/seq_encoding.cpp
-        src/seq/stages/seq_encoding.hpp
+        src/seq/stages/seq_mapping.cpp
+        src/seq/stages/seq_mapping.hpp
         src/common/file_writer.cpp
         src/common/file_writer.hpp
         src/utils/my_timer.cpp
         src/utils/my_timer.hpp
         src/common/frequency.hpp
+        src/thr/stages/thr_mapping.cpp
+        src/thr/stages/thr_mapping.hpp
+        src/seq/stages/seq_transform.cpp
+        src/seq/stages/seq_transform.hpp
 )

@@ -5,7 +5,7 @@
 #include "../seq/stages/seq_freq_map.h"
 #include "../thr/stages/thr_freq_map.hpp"
 #include "../common/huffman_map.hpp"
-#include "../seq/stages/seq_encoding.hpp"
+#include "../seq/stages/seq_mapping.hpp"
 
 #define STATIC_PARALLELISM_DEGREE 5
 
@@ -53,7 +53,7 @@ int test_huffman_encoding(string &file_input) {
     auto freq_map = seq_compute_frequencies(file_input);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
-    auto encoded_bin = seq_encode(huff_map, file_input);
+    auto encoded_bin = seq_mapping(huff_map, file_input);
 
     CHK_EQ(encoded_bin.size() % 8, 0);
 

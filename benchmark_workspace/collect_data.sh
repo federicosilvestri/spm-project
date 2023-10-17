@@ -104,15 +104,15 @@ for ((s=MIN_FILE_SIZE; s<=MAX_FILE_SIZE; s+=FILE_SIZE_STEP)); do
       ./spm_project THR "$FILE_IN" "$FILE_OUT" "$p" -M >> $THR_TEMP_RESULT_FILE
     done
     ## parse the file into csv
-    python b_tools/output_parser.py $THR_TEMP_RESULT_FILE "$RESULTS_FOLDER/thr_$p.csv"
+    python b_tools/output_parser.py $THR_TEMP_RESULT_FILE "$RESULTS_FOLDER/thr_temp_$p.csv"
     rm $THR_TEMP_RESULT_FILE
     echo -e "\nDone!"
   done
   echo "Merging files"
-  python b_tools/merge_results.py "$RESULTS_FOLDER/thr_" "$MIN_P_DEGREE" "$MAX_P_DEGREE" "$P_DEGREE_STEP" "$RESULTS_FOLDER/thr_$s.csv"
+  python b_tools/merge_results.py "$RESULTS_FOLDER/thr_temp_" "$MIN_P_DEGREE" "$MAX_P_DEGREE" "$P_DEGREE_STEP" "$RESULTS_FOLDER/thr_$s.csv"
   echo "Deleting temp files..."
   for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
-    rm "$RESULTS_FOLDER/thr_$p.csv"
+    rm "$RESULTS_FOLDER/thr_temp_$p.csv"
   done
   echo "THR benchmark finished"
 

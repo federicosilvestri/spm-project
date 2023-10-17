@@ -5,11 +5,11 @@
 #include "thr_impl.hpp"
 #include "stages/thr_freq_map.hpp"
 #include "../common/huffman_map.hpp"
+#include "stages/thr_mapping.hpp"
 #include "thread"
 #include "../utils/my_timer.hpp"
 
 // TODO to be removed
-#include "../seq/stages/seq_encoding.hpp"
 #include "../common/file_writer.hpp"
 
 using namespace std;
@@ -31,7 +31,7 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
     MyTimer timer;
 
     // STAGE 0: reading
-    timer.start("READING");
+    timer.start("READ");
     auto freq_map = thr_compute_frequencies(file_input, p);
     timer.stop();
 
@@ -42,14 +42,20 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
     timer.stop();
 
     // STAGE 2: Encoding the file into memory
-    timer.start("ENCODING");
-    auto encoded_binary = seq_encode(huff_map, file_input);
+    timer.start("MAP");
+    auto encoded_chunks = thr_mapping(huff_map, file_input, p_degree);
     timer.stop();
 
-    // STAGE 3: Writing into fs
-    timer.start("WRITING");
-    write_compressed_file(encoded_binary, file_output);
+    // STAGE 3: transform the EncodedChunk to ascii
+    timer.start("TRANSFORM");
+    // TODO
     timer.stop();
+
+
+    // STAGE 4: Writing into fs
+//    timer.start("WRITING");
+//    write_compressed_file(encoded_binary, file_output);
+//    timer.stop();
 
     // other steps goes here...
 

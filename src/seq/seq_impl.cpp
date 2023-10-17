@@ -8,7 +8,8 @@
 
 #include "stages/seq_freq_map.h"
 #include "../common/huffman_map.hpp"
-#include "stages/seq_encoding.hpp"
+#include "stages/seq_mapping.hpp"
+#include "stages/seq_transform.hpp"
 #include "../common/file_writer.hpp"
 
 using namespace std;
@@ -17,7 +18,7 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
     MyTimer timer;
 
     // STAGE 0: Reading and computing frequencies
-    timer.start("READING");
+    timer.start("READ");
     auto freq_map = seq_compute_frequencies(file_input);
     timer.stop();
 
@@ -28,13 +29,18 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
     timer.stop();
 
     // STAGE 2: Encoding the file into memory
-    timer.start("ENCODING");
-    auto encoded_binary = seq_encode(huff_map, file_input);
+    timer.start("MAP");
+    auto encoded_binary = seq_mapping(huff_map, file_input);
     timer.stop();
 
-    // STAGE 3: Writing into fs
-    timer.start("WRITING");
-    write_compressed_file(encoded_binary, file_output);
+    // STAGE 3: Transform the binary string to ascii
+    timer.start("TRANSFORM");
+    auto stream = seq_transform(encoded_binary);
+    timer.stop();
+
+    // STAGE 4: Writing into fs
+    timer.start("WRITE");
+    write_compressed_file(stream, file_output);
     timer.stop();
 
 

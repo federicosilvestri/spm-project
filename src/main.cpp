@@ -11,7 +11,7 @@
 #include "thr/thr_impl.hpp"
 
 // define the logging level, default to debug
-#define LOGGING_LEVEL "ERROR"
+#define LOGGING_LEVEL "DEBUG"
 
 using namespace std;
 

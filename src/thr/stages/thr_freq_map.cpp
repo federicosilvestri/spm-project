@@ -11,6 +11,8 @@
 #include "future"
 #include "stdexcept"
 
+#include "../../utils/file_utils.hpp"
+
 using namespace std;
 
 void
@@ -31,7 +33,7 @@ freq_worker(const string &file_input, unsigned int start, unsigned int end, Freq
 }
 
 FrequencyMap
-combine_two_map(FrequencyMap m1, FrequencyMap m2) {
+reduce_two_maps(FrequencyMap &m1, FrequencyMap &m2) {
     unordered_map<char, unsigned int> m3;
     for (auto &p: m1) {
         if (m3.count(p.first)) {
@@ -65,7 +67,7 @@ FrequencyMap reduce_maps(FrequencyVector &maps) {
     vector<future<FrequencyMap>> futures_vec(v_size / 2);
 
     for (int i = 0, j = 0; i < v_size; i += 2, j++) {
-        futures_vec[j] = std::async(std::launch::deferred, combine_two_map, maps[i], maps[i + 1]);
+        futures_vec[j] = std::async(std::launch::deferred, reduce_two_maps, ref(maps[i]), ref(maps[i + 1]));
     }
 
     // add the results of thread inside the reduced vector.
@@ -103,29 +105,22 @@ FrequencyMap thr_compute_frequencies(const string &file_input, unsigned int p_de
      * when threads has finished the work, I merge the hashmaps. (SEQ?)
      *
      */
-    // getting file size
-    ifstream fp(file_input, ios::binary);
-    fp.seekg(0, ios::end);
-    // computing chunk size
-    auto f_size = fp.tellg();
-    fp.close();
+    long f_size = file_size(file_input);
     // adjusting the parallelism, computing chunk size or delta, is the same.
-    unsigned int chunk_size = f_size / p_degree;
+    long chunk_size = f_size / p_degree;
     if (p_degree > f_size) {
         // chunk_size < 1
         // at least 1 character per thread...
         p_degree = f_size;
     }
 
-    // cout << "File is " << f_size << "large";
     vector<thread> threads_c(p_degree);
     FrequencyVector vector_maps(p_degree);
 
-
     for (auto i = 0; i < p_degree; i++) {
         unordered_map<char, unsigned int> v_map;
-        unsigned int start = i * chunk_size;
-        unsigned int end = start + chunk_size - 1;
+        auto start = i * chunk_size;
+        auto end = start + chunk_size - 1;
 
         if (i == p_degree - 1) {
             // the last thread may be unbalanced, we can use autoscheduling or jobstealing (autoscheduling can be implemented
