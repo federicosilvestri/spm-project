@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void mapper_worker(HuffMap &huffMap, const string file_input, long start, long end, string& encoded) {
+void mapper_worker(HuffMap &huffMap, const string file_input, long start, long end, string &encoded) {
     ifstream fp(file_input);
     fp.seekg(start);
     for (auto i = 0; i <= (end - start); i++) {
@@ -20,7 +20,7 @@ void mapper_worker(HuffMap &huffMap, const string file_input, long start, long e
 }
 
 
-EncodedChunks thr_mapping(HuffMap &huff_map, const string& file_input, unsigned int p_degree) {
+stringstream thr_mapping(HuffMap &huff_map, const string &file_input, unsigned int p_degree) {
     /*
      * We split again the file into chunks, and we assign statically a chunk of data
      * to a thread. The task for each thread is equally complex and the effort of each thread is balanced.
@@ -37,7 +37,7 @@ EncodedChunks thr_mapping(HuffMap &huff_map, const string& file_input, unsigned 
     // a vector of threads.
     vector<thread> threads_c(p_degree);
     // the data where threads puts the results (shared object between threads).
-    vector<string> encoded_data(p_degree);
+    vector<string> partial_mapped(p_degree);
 
     for (auto i = 0; i < p_degree; i++) {
         string encoded;
@@ -50,17 +50,25 @@ EncodedChunks thr_mapping(HuffMap &huff_map, const string& file_input, unsigned 
             end = f_size;
             end -= 1;
         }
-        encoded_data[i] = encoded;
-        threads_c[i] = thread(mapper_worker, ref(huff_map), file_input, start, end, std::ref(encoded_data[i]));
+        partial_mapped[i] = encoded;
+        threads_c[i] = thread(mapper_worker, ref(huff_map), file_input, start, end, std::ref(partial_mapped[i]));
     }
 
+    stringstream encoded;
+    unsigned int total_size = 0;
     for (auto i = 0; i < p_degree; i++) {
         // waiting for threads to finish
         threads_c[i].join();
+        encoded << partial_mapped[i];
+        total_size += partial_mapped[i].size();
     }
 
-    EncodedChunks ec;
-    ec.chunks = encoded_data;
-    ec.pad();
-    return ec;
+    if (total_size % 8 != 0) {
+        // padding
+        unsigned int pad = 8 - (total_size % 8);
+        string s(pad, '0');
+        encoded << s;
+    }
+
+    return encoded;
 }

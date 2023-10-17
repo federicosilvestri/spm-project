@@ -41,16 +41,18 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 2: Encoding the file into memory
     timer.start("MAP");
-    auto encoded_chunks = thr_mapping(huff_map, file_input, p_degree);
+    auto mapped_stream = thr_mapping(huff_map, file_input, p_degree);
     timer.stop();
 
     // STAGE 3: transform the EncodedChunk to ascii
     timer.start("TRANSFORM");
-    auto char_stream = thr_transform(encoded_chunks);
+    auto char_stream = thr_transform(mapped_stream, p_degree);
     timer.stop();
 
+
+
     // STAGE 4: Writing into fs
-    timer.start("WRITING");
+    timer.start("WRITE");
     write_compressed_file(char_stream, file_output);
     timer.stop();
 

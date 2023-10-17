@@ -314,7 +314,7 @@
     }                                                           \
 }
 // entrypoint
-void execute_test(int argc, char **argv, std::string &file_in, std::string &file_out);
+void execute_test(int argc, char **argv, std::string &file_in);
 
 using test_func = std::function<int()>;
 
