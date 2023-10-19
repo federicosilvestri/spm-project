@@ -34,16 +34,16 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
     auto huff_map = build_huffman_map(huff_tree);
     timer.stop();
 
-    // STAGE 2: Encoding the file into memory
-    timer.start("MAP");
-    auto mapped_string = seq_mapping(huff_map, &file_content);
-    timer.stop();
-
-
-    // STAGE 4: Writing into fs
-    timer.start("WRITE");
-    write_compressed_file(mapped_string, file_output);
-    timer.stop();
+//    // STAGE 2: Encoding the file into memory
+//    timer.start("MAP");
+//    auto mapped_string = seq_mapping(huff_map, &file_content);
+//    timer.stop();
+//
+//
+//    // STAGE 4: Writing into fs
+//    timer.start("WRITE");
+//    write_compressed_file(mapped_string, file_output);
+//    timer.stop();
 
 //    // STAGE 3: Transform the binary string to ascii
 //    timer.start("TRANSFORM");

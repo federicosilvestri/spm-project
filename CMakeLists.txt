@@ -16,7 +16,7 @@ set(CMAKE_CXX_COMPILER g++)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 # Set the options for debug target
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
+#set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O3 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
 
 # Set the options for release target
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
@@ -45,7 +45,6 @@ add_executable(spm_project
         src/common/write.hpp
         src/utils/my_timer.cpp
         src/utils/my_timer.hpp
-        src/common/frequency.hpp
         src/thr/stages/thr_mapping.cpp
         src/thr/stages/thr_mapping.hpp
         src/seq/stages/seq_transform.cpp

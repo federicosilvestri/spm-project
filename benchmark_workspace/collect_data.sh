@@ -24,7 +24,7 @@ MAX_P_DEGREE=20
 #
 # Degree step (1 is the best, more granular)
 #
-P_DEGREE_STEP=5
+P_DEGREE_STEP=1
 
 #
 # Minimum file size (in millions of characters)

@@ -5,9 +5,9 @@
 #ifndef SPM_PROJECT_HUFFMAN_MAP_HPP
 #define SPM_PROJECT_HUFFMAN_MAP_HPP
 #include "huffman_tree.hpp"
-#include "frequency.hpp"
 #include "unordered_map"
 #include "iostream"
+#include "vector"
 
 /**
  * @brief Here I define for simplicity a new type for HuffMap.
@@ -19,7 +19,7 @@ typedef std::unordered_map<char, std::string> HuffMap;
  * @param data_map the hashmap between characters and frequencies.
  * @return The HuffNode class that represents the root of tree.
  */
-HuffNode* build_huffman_tree(FrequencyMap &data_map);
+HuffNode* build_huffman_tree(std::vector<unsigned int> &data_map);
 
 /**
  * @brief Builds an hashmap that contains the pair <character, encoded_string>

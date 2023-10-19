@@ -7,19 +7,16 @@
 
 using namespace std;
 
-FrequencyMap seq_compute_frequencies(const string *file_content) {
+vector<unsigned int> seq_compute_frequencies(const string *file_content) {
     /**
      * Here we start the first stage of algorithm by computing,
      * character by character, an hashmap (unordered) of char and its own frequency.
      */
-    FrequencyMap frequency_map;
+    vector<unsigned int> frequency_map(256, 0);
 
-    for (char key: *file_content) {
-        if (frequency_map.contains(key)) {
-            frequency_map[key]++;
-        } else {
-            frequency_map.insert({key, 1});
-        }
+    for (char key : *file_content) {
+        auto v = static_cast<unsigned char>(key);
+        frequency_map[v] += 1;
     }
 
 /*

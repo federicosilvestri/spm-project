@@ -30,18 +30,12 @@ int test_functional_reading(string &file_input) {
 int test_functional_calcfreq(string &file_input) {
     string content = seq_read_file(file_input);
     auto m1 = seq_compute_frequencies(&content);
-    auto m2 = thr_compute_frequencies(&content, STATIC_PARALLELISM_DEGREE);
+    auto m2 = thr_compute_frequencies(content, STATIC_PARALLELISM_DEGREE);
 
     CHK_TRUE(m1.size() == m2.size());
 
-    // double check
-    for (auto &p: m1) {
-        CHK_TRUE(m2.count(p.first));
-        CHK_TRUE(m2.at(p.first) == p.second)
-    }
-    for (auto &p: m2) {
-        CHK_TRUE(m1.count(p.first));
-        CHK_TRUE(m1.at(p.first) == p.second)
+    for (auto i = 0; i < m1.size(); i++) {
+        CHK_EQ(m1[i], m2[i]);
     }
 
     return 0;
@@ -55,12 +49,14 @@ int test_huffman_build(string &file_input) {
     auto huff_map = build_huffman_map(huff_tree);
 
     // checking maps
-    CHK_TRUE(freq_map.size() == huff_map.size())
-    for (auto &p: freq_map) {
-        CHK_TRUE(huff_map.count(p.first));
+    for (int i = 0; i < freq_map.size(); i++) {
+        if (freq_map[i] > 0) {
+            CHK_TRUE(huff_map.count(i));
+        }
     }
+
     for (auto &p: huff_map) {
-        CHK_TRUE(freq_map.count(p.first));
+        CHK_TRUE(freq_map[p.first]);
     }
 
     return 0;

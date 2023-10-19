@@ -8,7 +8,7 @@
 
 using namespace std;
 
-HuffNode *build_huffman_tree(FrequencyMap &data_map) {
+HuffNode *build_huffman_tree(vector<unsigned int> &data_map) {
     /* The algorithm from literature suggests to use a priority queue
      * where the priority is defined by probability (i.e. frequency).
      * Here I define as container for the queue a vector of HuffNode,
@@ -17,11 +17,13 @@ HuffNode *build_huffman_tree(FrequencyMap &data_map) {
     priority_queue<HuffNode *, vector<HuffNode *>, CompareHuffNodes> queue;
 
     // first step: push all data inside the queue.
-    for (auto &pair: data_map) {
-        queue.push(new HuffNode(
-                pair.first,
-                pair.second
-        ));
+    for (int i = 0; i < data_map.size(); i++) {
+        char key = i;
+        unsigned int freq = data_map[i];
+
+        if (data_map[i] > 0) {
+            queue.push(new HuffNode(key, freq));
+        }
     }
 
     // second step: iterates until the queue > 1
