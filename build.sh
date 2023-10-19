@@ -10,7 +10,7 @@ rm -rf build && mkdir build
 # go to build dir
 cd build
 # use cMake tool to create the main makefile
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release ..
 # start the compilation
 make
 # leave building directory

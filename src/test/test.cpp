@@ -2,8 +2,10 @@
 // Created by federicosilvestri on 10/10/23.
 //
 #include "test_common.h"
-#include "../seq/stages/seq_freq_map.h"
-#include "../thr/stages/thr_freq_map.hpp"
+#include "../seq/stages/seq_read.hpp"
+#include "../thr/stages/thr_read.hpp"
+#include "../seq/stages/seq_freq.h"
+#include "../thr/stages/thr_freq.hpp"
 #include "../common/huffman_map.hpp"
 #include "../seq/stages/seq_mapping.hpp"
 #include "../thr/stages/thr_mapping.hpp"
@@ -11,14 +13,24 @@
 #include "../thr/stages/thr_transform.hpp"
 
 
-#define STATIC_PARALLELISM_DEGREE 5
+#define STATIC_PARALLELISM_DEGREE 4
 
 using namespace std;
 
 
 int test_functional_reading(string &file_input) {
-    auto m1 = seq_compute_frequencies(file_input);
-    auto m2 = thr_compute_frequencies(file_input, STATIC_PARALLELISM_DEGREE);
+    string content1 = thr_read_file(file_input, STATIC_PARALLELISM_DEGREE);
+    string content2 = seq_read_file(file_input);
+
+    CHK_EQ(content1, content2);
+
+    return 0;
+}
+
+int test_functional_calcfreq(string &file_input) {
+    string content = seq_read_file(file_input);
+    auto m1 = seq_compute_frequencies(&content);
+    auto m2 = thr_compute_frequencies(&content, STATIC_PARALLELISM_DEGREE);
 
     CHK_TRUE(m1.size() == m2.size());
 
@@ -37,7 +49,8 @@ int test_functional_reading(string &file_input) {
 
 
 int test_huffman_build(string &file_input) {
-    auto freq_map = seq_compute_frequencies(file_input);
+    string content = seq_read_file(file_input);
+    auto freq_map = seq_compute_frequencies(&content);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
 
@@ -54,34 +67,29 @@ int test_huffman_build(string &file_input) {
 }
 
 int test_mapping(string &file_input) {
-    auto freq_map = seq_compute_frequencies(file_input);
+    string content = seq_read_file(file_input);
+    auto freq_map = seq_compute_frequencies(&content);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
-    auto mapped_bin = seq_mapping(huff_map, file_input);
-    auto mapped_bin2 = thr_mapping(huff_map, file_input, STATIC_PARALLELISM_DEGREE);
+    auto mapped_bin = seq_mapping(huff_map, &content);
+    auto mapped_bin2 = thr_mapping(huff_map, &content, STATIC_PARALLELISM_DEGREE);
 
     CHK_EQ(mapped_bin.size() % 8, 0);
-    CHK_EQ(mapped_bin2.str().size() % 8, 0);
-
-    CHK_TRUE(mapped_bin.size() == mapped_bin2.str().size());
+    CHK_EQ(mapped_bin2.size() % 8, 0);
+    CHK_TRUE(mapped_bin == mapped_bin2);
     return 0;
 }
 
 int test_transform(string &file_input) {
-    auto freq_map = seq_compute_frequencies(file_input);
+    string content = seq_read_file(file_input);
+    auto freq_map = seq_compute_frequencies(&content);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
-    auto mapped_bin = seq_mapping(huff_map, file_input);
-    auto mapped_bin2 = thr_mapping(huff_map, file_input, STATIC_PARALLELISM_DEGREE);
-    auto stream_seq = seq_transform(mapped_bin);
-    auto stream_thr = thr_transform(mapped_bin2, STATIC_PARALLELISM_DEGREE);
+    auto mapped_bin = seq_mapping(huff_map, &content);
+    auto char_seq = seq_transform(mapped_bin);
+    auto char_thr = thr_transform(mapped_bin, STATIC_PARALLELISM_DEGREE);
 
-    char c1, c2;
-    while (stream_seq.get(c1) && stream_thr.get(c2)) {
-        CHK_EQ(c1, c2);
-    }
-
-
+    CHK_EQ(char_seq, char_thr);
     return 0;
 }
 
@@ -89,6 +97,7 @@ void execute_test(int argc, char **argv, string &file_input) {
     TestSuite test(argc, argv);
 
     test.doTest("Functional testing for stage: READ", test_functional_reading, file_input);
+    test.doTest("Functional testing for stage: FREQCALC", test_functional_calcfreq, file_input);
     test.doTest("Functional testing for stage: HUFFBUILD", test_huffman_build, file_input);
     test.doTest("Functional testing for stage: MAP", test_mapping, file_input);
     test.doTest("Functional testing for stage: TRANSFORM", test_transform, file_input);

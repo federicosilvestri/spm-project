@@ -14,9 +14,9 @@
 /**
  * @brief Maps the file content of the file into a binary string.
  * @param huff_map The Huffman Map to be used.
- * @param file_input The file to be read.
- * @return A stream of characters
+ * @param file_content The file content
+ * @return A string of binary characters
  */
-std::stringstream thr_mapping(HuffMap &huff_map, const std::string &file_input, unsigned int p_degree);
+std::string thr_mapping(HuffMap &huff_map, const std::string *file_content, unsigned int p_degree);
 
 #endif //SPM_PROJECT_THR_MAPPING_HPP

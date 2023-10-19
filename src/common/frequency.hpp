@@ -12,9 +12,5 @@
  */
  typedef std::unordered_map<char, unsigned int> FrequencyMap;
 
-/**
- * @brief Vector of frequencies.
- */
- typedef std::vector<FrequencyMap> FrequencyVector;
 
 #endif //SPM_PROJECT_FREQUENCY_HPP

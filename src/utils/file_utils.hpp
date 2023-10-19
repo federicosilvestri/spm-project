@@ -16,7 +16,7 @@ inline bool file_exists(const std::string &name) {
     return (stat(name.c_str(), &buffer) == 0);
 }
 
-inline long file_size(const std::string &name) {
+inline unsigned long file_size(const std::string &name) {
     // getting file size
     std::ifstream fp(name, std::ios::binary);
     fp.seekg(0, std::ios::end);

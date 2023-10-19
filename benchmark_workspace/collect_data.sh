@@ -9,7 +9,7 @@ RESULTS_FOLDER="results/"
 # This is the number of samples to collect in order to detect possible outliers.
 # It represent how many time you want to run the program.
 #
-EXEC_N=5
+EXEC_N=2
 
 #
 # MINIMUM P_DEGREE (=1 by default)
@@ -24,22 +24,22 @@ MAX_P_DEGREE=20
 #
 # Degree step (1 is the best, more granular)
 #
-P_DEGREE_STEP=1
+P_DEGREE_STEP=5
 
 #
 # Minimum file size (in millions of characters)
 #
-MIN_FILE_SIZE=10
+MIN_FILE_SIZE=20
 
 #
 # Maximum file size (in millions of characters)
 #
-MAX_FILE_SIZE=10
+MAX_FILE_SIZE=20
 
 #
 # File size step
 #
-FILE_SIZE_STEP=10
+FILE_SIZE_STEP=20
 
 
 # Output file

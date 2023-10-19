@@ -9,9 +9,9 @@
 
 /**
  * @brief Transforms the binary string into ascii-readable string stream.
- * @param binary_string The stream to be transformed
- * @return a stream of ascii characters
+ * @param binary_string The string to be transformed
+ * @return a string of ascii characters
  */
-std::stringstream seq_transform(std::string& binary_string);
+std::string seq_transform(std::string& binary_string);
 
 #endif //SPM_PROJECT_SEQ_TRANSFORM_HPP

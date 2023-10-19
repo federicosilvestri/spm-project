@@ -13,6 +13,6 @@
  * @param p_degree the degree of parallelism
  * @return character stream
  */
-std::stringstream thr_transform(std::stringstream& binary_stream, unsigned int p_degree);
+std::string thr_transform(std::string& binary_stream, unsigned int p_degree);
 
 #endif //SPM_PROJECT_THR_TRANSFORM_HPP

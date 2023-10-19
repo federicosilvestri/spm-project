@@ -10,9 +10,9 @@
 /**
  * @brief Maps the file content of the file into a binary string.
  * @param huff_map The Huffman Map to be used.
- * @param file_input The file to be read.
+ * @param file_content The content of the file
  * @return The binary string.
  */
-std::string seq_mapping(HuffMap &huff_map, const std::string &file_input);
+std::string seq_mapping(HuffMap &huff_map, const std::string *file_content);
 
 #endif //SPM_PROJECT_SEQ_MAPPING_HPP

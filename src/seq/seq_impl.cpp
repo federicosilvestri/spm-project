@@ -6,20 +6,26 @@
 #include "string"
 #include "../utils/my_timer.hpp"
 
-#include "stages/seq_freq_map.h"
+#include "stages/seq_read.hpp"
+#include "stages/seq_freq.h"
 #include "../common/huffman_map.hpp"
 #include "stages/seq_mapping.hpp"
 #include "stages/seq_transform.hpp"
-#include "../common/file_writer.hpp"
+#include "../common/write.hpp"
 
 using namespace std;
 
 void seq_impl(const string &file_input, const string &file_output, bool enable_measures) {
     MyTimer timer;
 
-    // STAGE 0: Reading and computing frequencies
+    // STAGE 0: READ the file
     timer.start("READ");
-    auto freq_map = seq_compute_frequencies(file_input);
+    string file_content = seq_read_file(file_input);
+    timer.stop();
+
+    // STAGE 0: Reading and computing frequencies
+    timer.start("FREQCALC");
+    auto freq_map = seq_compute_frequencies(&file_content);
     timer.stop();
 
     // STAGE 1: Computing Huffman Tree and Huffman Map
@@ -30,18 +36,24 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
 
     // STAGE 2: Encoding the file into memory
     timer.start("MAP");
-    auto encoded_binary = seq_mapping(huff_map, file_input);
+    auto mapped_string = seq_mapping(huff_map, &file_content);
     timer.stop();
 
-    // STAGE 3: Transform the binary string to ascii
-    timer.start("TRANSFORM");
-    auto stream = seq_transform(encoded_binary);
-    timer.stop();
 
     // STAGE 4: Writing into fs
     timer.start("WRITE");
-    write_compressed_file(stream, file_output);
+    write_compressed_file(mapped_string, file_output);
     timer.stop();
+
+//    // STAGE 3: Transform the binary string to ascii
+//    timer.start("TRANSFORM");
+//    auto stream = seq_transform(encoded_binary);
+//    timer.stop();
+//
+//    // STAGE 4: Writing into fs
+//    timer.start("WRITE");
+//    write_compressed_file(stream, file_output);
+//    timer.stop();
 
 
     /*

@@ -17,20 +17,15 @@ void padding(string *binary) {
     }
 }
 
-string seq_mapping(HuffMap &huff_map, const string &file_input) {
+string seq_mapping(HuffMap &huff_map, const string *file_content) {
+    /*
+     * Maps the content of the file into a binary code.
+     */
     string encoded;
-    ifstream file_stream;
-    file_stream.open(file_input, ios::in);
 
-    if (file_stream.is_open()) {
-        char c;
-        while (file_stream.get(c)) {
-            encoded.append(huff_map.at(c));
-        }
-    } else {
-        throw invalid_argument("Cannot read input file!");
+    for (char c: *file_content) {
+        encoded += huff_map.at(c);
     }
-    file_stream.close();
 
     padding(&encoded);
     return encoded;

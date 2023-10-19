@@ -288,3 +288,6 @@ benchmark_workspace/dataset/
 benchmark_workspace/spm_project
 benchmark_workspace/out
 /benchmark_workspace/.ipynb_checkpoints/
+cmake-build-release/
+cmake-build-docker-debug
+cmake-build-docker-release

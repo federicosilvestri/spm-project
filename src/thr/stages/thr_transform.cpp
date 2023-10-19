@@ -9,7 +9,7 @@
 
 using namespace std;
 
-std::stringstream transform_worker(std::string &binary_string, unsigned int begin, unsigned int end) {
+stringstream transform_worker(std::string &binary_string, unsigned int begin, unsigned int end) {
     stringstream ss;
     for (auto i = begin; i < end; i += 8) {
         bitset<8> group(binary_string.substr(i, 8));
@@ -20,14 +20,12 @@ std::stringstream transform_worker(std::string &binary_string, unsigned int begi
 }
 
 
-std::stringstream thr_transform(std::stringstream &binary_stream, unsigned int p_degree) {
+string thr_transform(string &binary, unsigned int p_degree) {
     /*
      * We define a chunk size for each thread that must be a multiple of 8.
      * For each chunk start a thread and transform the string into encoded ascii string.
      * Finally, merge the result sequentially by inserting the string inside the stringstream.
      */
-
-    string binary = binary_stream.str();
     unsigned long block_size = binary.size() / 8;
     unsigned long chunk_size = block_size / p_degree;
 
@@ -56,5 +54,5 @@ std::stringstream thr_transform(std::stringstream &binary_stream, unsigned int p
         final_stream << tmp.rdbuf();
     }
 
-    return final_stream;
+    return final_stream.str();
 }
