@@ -17,6 +17,6 @@
  * @param file_content The file content
  * @return A string of binary characters
  */
-std::string thr_mapping(HuffMap &huff_map, const std::string *file_content, unsigned int p_degree);
+std::string thr_mapping(HuffMap &huff_map, const std::string& file_content, unsigned int p_degree);
 
 #endif //SPM_PROJECT_THR_MAPPING_HPP

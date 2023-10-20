@@ -9,7 +9,7 @@ RESULTS_FOLDER="results/"
 # This is the number of samples to collect in order to detect possible outliers.
 # It represent how many time you want to run the program.
 #
-EXEC_N=5
+EXEC_N=1
 
 #
 # MINIMUM P_DEGREE (=1 by default)
@@ -84,12 +84,12 @@ for ((s=MIN_FILE_SIZE; s<=MAX_FILE_SIZE; s+=FILE_SIZE_STEP)); do
   SEQ_TEMP_RESULT_FILE="$RESULTS_FOLDER/seq.temp.txt"
   echo "Executing the sequential version"
   for ((i=0; i<EXEC_N; i++)); do
-    echo -ne "Executing $i/$EXEC_N\r"
+    echo -ne "Executing $((i+1))/$EXEC_N\r"
     ./spm_project SEQ "$FILE_IN" "$FILE_OUT" 0 -M >> $SEQ_TEMP_RESULT_FILE
   done
   # parse the file into csv
   python b_tools/output_parser.py $SEQ_TEMP_RESULT_FILE "$RESULTS_FOLDER/sequential_$s.csv"
-  rm $SEQ_TEMP_RESULT_FILE
+#  rm $SEQ_TEMP_RESULT_FILE
   echo "SEQ benchmark finished"
 
 
@@ -101,7 +101,7 @@ for ((s=MIN_FILE_SIZE; s<=MAX_FILE_SIZE; s+=FILE_SIZE_STEP)); do
     echo "P_DEGREE = $p"
     THR_TEMP_RESULT_FILE="$RESULTS_FOLDER/thr_$p.temp.txt"
     for ((i=0; i<EXEC_N;i++)); do
-      echo -ne "Executing $i/$EXEC_N\r"
+      echo -ne "Executing $((i+1))/$EXEC_N\r"
       ./spm_project THR "$FILE_IN" "$FILE_OUT" "$p" -M >> $THR_TEMP_RESULT_FILE
     done
     ## parse the file into csv
@@ -111,10 +111,10 @@ for ((s=MIN_FILE_SIZE; s<=MAX_FILE_SIZE; s+=FILE_SIZE_STEP)); do
   done
   echo "Merging files"
   python b_tools/merge_results.py "$RESULTS_FOLDER/thr_temp_" "$MIN_P_DEGREE" "$MAX_P_DEGREE" "$P_DEGREE_STEP" "$RESULTS_FOLDER/thr_$s.csv"
-  echo "Deleting temp files..."
-  for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
-    rm "$RESULTS_FOLDER/thr_temp_$p.csv"
-  done
+#  echo "Deleting temp files..."
+#  for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
+#    rm "$RESULTS_FOLDER/thr_temp_$p.csv"
+#  done
   echo "THR benchmark finished"
 
 

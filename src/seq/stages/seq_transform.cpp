@@ -7,7 +7,7 @@
 #include "iostream"
 using namespace std;
 
-std::string seq_transform(std::string &binary_string) {
+std::stringstream seq_transform(std::string &binary_string) {
     stringstream ss;
     for (auto i = 0; i < binary_string.size(); i+=8) {
         bitset<8> group(binary_string.substr(i, 8));
@@ -15,5 +15,5 @@ std::string seq_transform(std::string &binary_string) {
         ss << c;
 
     }
-    return ss.str();
+    return ss;
 }

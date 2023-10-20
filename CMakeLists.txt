@@ -19,7 +19,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 #set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O3 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
 
 # Set the options for release target
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
+# set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
 
 add_executable(spm_project
         src/main.cpp
@@ -56,6 +56,4 @@ add_executable(spm_project
         src/seq/stages/seq_read.hpp
         src/seq/stages/seq_read.cpp
         src/common/data_types.hpp
-        src/thr/thread_pool.cpp
-        src/thr/thread_pool.hpp
 )

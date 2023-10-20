@@ -20,7 +20,7 @@ stringstream transform_worker(std::string &binary_string, unsigned int begin, un
 }
 
 
-string thr_transform(string &binary, unsigned int p_degree) {
+stringstream thr_transform(string &binary, unsigned int p_degree) {
     /*
      * We define a chunk size for each thread that must be a multiple of 8.
      * For each chunk start a thread and transform the string into encoded ascii string.
@@ -54,5 +54,5 @@ string thr_transform(string &binary, unsigned int p_degree) {
         final_stream << tmp.rdbuf();
     }
 
-    return final_stream.str();
+    return final_stream;
 }

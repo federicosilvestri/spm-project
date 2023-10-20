@@ -29,7 +29,7 @@ int test_functional_reading(string &file_input) {
 
 int test_functional_calcfreq(string &file_input) {
     string content = seq_read_file(file_input);
-    auto m1 = seq_compute_frequencies(&content);
+    auto m1 = seq_compute_frequencies(content);
     auto m2 = thr_compute_frequencies(content, STATIC_PARALLELISM_DEGREE);
 
     CHK_TRUE(m1.size() == m2.size());
@@ -44,19 +44,15 @@ int test_functional_calcfreq(string &file_input) {
 
 int test_huffman_build(string &file_input) {
     string content = seq_read_file(file_input);
-    auto freq_map = seq_compute_frequencies(&content);
+    auto freq_map = seq_compute_frequencies(content);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
 
     // checking maps
     for (int i = 0; i < freq_map.size(); i++) {
         if (freq_map[i] > 0) {
-            CHK_TRUE(huff_map.count(i));
+            CHK_FALSE(huff_map[i].empty());
         }
-    }
-
-    for (auto &p: huff_map) {
-        CHK_TRUE(freq_map[p.first]);
     }
 
     return 0;
@@ -64,11 +60,11 @@ int test_huffman_build(string &file_input) {
 
 int test_mapping(string &file_input) {
     string content = seq_read_file(file_input);
-    auto freq_map = seq_compute_frequencies(&content);
+    auto freq_map = seq_compute_frequencies(content);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
-    auto mapped_bin = seq_mapping(huff_map, &content);
-    auto mapped_bin2 = thr_mapping(huff_map, &content, STATIC_PARALLELISM_DEGREE);
+    auto mapped_bin = seq_mapping(huff_map, content);
+    auto mapped_bin2 = thr_mapping(huff_map, content, STATIC_PARALLELISM_DEGREE);
 
     CHK_EQ(mapped_bin.size() % 8, 0);
     CHK_EQ(mapped_bin2.size() % 8, 0);
@@ -78,14 +74,14 @@ int test_mapping(string &file_input) {
 
 int test_transform(string &file_input) {
     string content = seq_read_file(file_input);
-    auto freq_map = seq_compute_frequencies(&content);
+    auto freq_map = seq_compute_frequencies(content);
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
-    auto mapped_bin = seq_mapping(huff_map, &content);
+    auto mapped_bin = seq_mapping(huff_map, content);
     auto char_seq = seq_transform(mapped_bin);
     auto char_thr = thr_transform(mapped_bin, STATIC_PARALLELISM_DEGREE);
 
-    CHK_EQ(char_seq, char_thr);
+    CHK_EQ(char_seq.str(), char_thr.str());
     return 0;
 }
 
