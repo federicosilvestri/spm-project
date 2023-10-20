@@ -55,4 +55,7 @@ add_executable(spm_project
         src/thr/stages/thr_read.hpp
         src/seq/stages/seq_read.hpp
         src/seq/stages/seq_read.cpp
+        src/common/data_types.hpp
+        src/thr/thread_pool.cpp
+        src/thr/thread_pool.hpp
 )

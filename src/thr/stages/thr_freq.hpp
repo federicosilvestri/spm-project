@@ -4,12 +4,8 @@
 
 #ifndef SPM_PROJECT_THR_FREQUENCY_MAPPER_HPP
 #define SPM_PROJECT_THR_FREQUENCY_MAPPER_HPP
-
-// #define GMR_IMP if you want to enable Google Map Reduce
-
 #include "string"
-#include "vector"
-#include "iostream"
+#include "../../common/data_types.hpp"
 
 /**
  * @brief Compute the frequencies for each character in a given input text file.
@@ -17,6 +13,6 @@
  * @param p_degree degree of parallelism
  * @return the computed map of char and its frequency
  */
-std::vector<unsigned int> thr_compute_frequencies(const std::string &content, unsigned int p_degree);
+FrequencyMap thr_compute_frequencies(const std::string &content, unsigned int p_degree);
 
 #endif //SPM_PROJECT_THR_FREQUENCY_MAPPER_HPP

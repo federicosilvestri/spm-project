@@ -17,6 +17,8 @@
 #include "stages/thr_mapping.hpp"
 #include "stages/thr_transform.hpp"
 
+#include "thread_pool.hpp"
+
 using namespace std;
 
 void thr_impl(const std::string &file_input, const std::string &file_output, int p_degree, bool enable_measures) {

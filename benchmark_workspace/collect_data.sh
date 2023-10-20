@@ -9,7 +9,7 @@ RESULTS_FOLDER="results/"
 # This is the number of samples to collect in order to detect possible outliers.
 # It represent how many time you want to run the program.
 #
-EXEC_N=2
+EXEC_N=5
 
 #
 # MINIMUM P_DEGREE (=1 by default)
@@ -29,20 +29,21 @@ P_DEGREE_STEP=1
 #
 # Minimum file size (in millions of characters)
 #
-MIN_FILE_SIZE=20
+MIN_FILE_SIZE=50
 
 #
 # Maximum file size (in millions of characters)
 #
-MAX_FILE_SIZE=20
+MAX_FILE_SIZE=50
 
 #
 # File size step
 #
-FILE_SIZE_STEP=20
+FILE_SIZE_STEP=50
 
 
 # Output file
+FILE_OUT="$FILE_OUT_FOLDER/out.txt";
 FILE_OUT="$FILE_OUT_FOLDER/out.txt";
 
 # The compiled program must be here and must be named spm_project

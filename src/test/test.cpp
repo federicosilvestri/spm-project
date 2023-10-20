@@ -13,7 +13,7 @@
 #include "../thr/stages/thr_transform.hpp"
 
 
-#define STATIC_PARALLELISM_DEGREE 4
+#define STATIC_PARALLELISM_DEGREE 5
 
 using namespace std;
 
