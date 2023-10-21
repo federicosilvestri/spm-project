@@ -9,7 +9,7 @@
 #include "stages/ff_freq.hpp"
 #include "../common/huffman_map.hpp"
 #include "stages/ff_mapping.hpp"
-//#include "stages/ff_transform.hpp"
+#include "stages/ff_transform.hpp"
 #include "../common/write.hpp"
 
 using namespace std;
@@ -33,10 +33,10 @@ void ff_impl(const string &file_input, const string &file_output, int p_degree, 
     auto huff_map = build_huffman_map(huff_tree);
     timer.stop();
 
-//    // STAGE 3: Encoding the file into memory
-//    timer.start("MAP");
-//    auto mapped_string = ff_mapping(huff_map, file_content, p_degree);
-//    timer.stop();
+    // STAGE 3: Encoding the file into memory
+    timer.start("MAP");
+    auto mapped_string = ff_mapping(huff_map, file_content, p_degree);
+    timer.stop();
 
     // STAGE 4: Transform the binary string to ascii
 //    timer.start("TRANSFORM");
