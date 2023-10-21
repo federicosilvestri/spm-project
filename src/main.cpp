@@ -9,6 +9,7 @@
 
 #include "seq/seq_impl.hpp"
 #include "thr/thr_impl.hpp"
+#include "fastflow/ff_impl.hpp"
 
 // define the logging level, default to debug
 #define LOGGING_LEVEL "ERROR"
@@ -94,7 +95,7 @@ int main(int argc, char *argv[]) {
         thr_impl(in_file, out_file, parallelism_degree, enable_measures);
     } else if ("FF" == par_choice) {
         logger->Log("Starting FF implementation execution", LogLevel::DEBUG);
-        return 1; // not yet implemented
+        ff_impl(in_file, out_file, parallelism_degree, enable_measures);
     } else {
         cerr << "The parallelization method is not supported." << endl;
         print_usage(string(argv[0]));

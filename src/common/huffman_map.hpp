@@ -10,10 +10,6 @@
 #include "../common/data_types.hpp"
 
 /**
- * @brief Here I define for simplicity a new type for HuffMap.
- */
-struct HuffMap : public std::array<std::string, 256> {};
-/**
  * @brief Build the Huffman tree
  * @param f_map the hashmap between characters and frequencies.
  * @return The HuffNode class that represents the root of tree.
