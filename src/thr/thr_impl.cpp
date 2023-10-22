@@ -41,8 +41,9 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
 
     timer.start("FREQCALC");
-    auto freq_map = thr_compute_frequencies(&file_content, p_degree);
+    auto freq_map = thr_compute_frequencies(file_content, p_degree);
     timer.stop();
+
 
     // STAGE 1: build the Huffman tree and Huffman Map
     timer.start("HUFFBUILD");
@@ -53,23 +54,19 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 2: Encoding the file into memory
     timer.start("MAP");
-    auto mapped_stream = thr_mapping(huff_map, &file_content, p_degree);
+    auto mapped_stream = thr_mapping(huff_map, file_content, p_degree);
     timer.stop();
 
-    //    // STAGE 4: Writing into fs
+
+    // STAGE 3: transform the EncodedChunk to ascii
+    timer.start("TRANSFORM");
+    auto char_stream = thr_transform(mapped_stream, p_degree);
+    timer.stop();
+
+    // STAGE 4: Writing into fs
     timer.start("WRITE");
-    write_compressed_file(mapped_stream, file_output);
+    write_compressed_file(char_stream, file_output);
     timer.stop();
-
-//    // STAGE 3: transform the EncodedChunk to ascii
-//    timer.start("TRANSFORM");
-//    auto char_stream = thr_transform(mapped_stream, p_degree);
-//    timer.stop();
-//
-//    // STAGE 4: Writing into fs
-//    timer.start("WRITE");
-//    write_compressed_file(char_stream, file_output);
-//    timer.stop();
 
     /*
      * Managing the output of measures.

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-HuffNode *build_huffman_tree(FrequencyMap &data_map) {
+HuffNode *build_huffman_tree(FrequencyMap &f_map) {
     /* The algorithm from literature suggests to use a priority queue
      * where the priority is defined by probability (i.e. frequency).
      * Here I define as container for the queue a vector of HuffNode,
@@ -17,11 +17,13 @@ HuffNode *build_huffman_tree(FrequencyMap &data_map) {
     priority_queue<HuffNode *, vector<HuffNode *>, CompareHuffNodes> queue;
 
     // first step: push all data inside the queue.
-    for (auto &pair: data_map) {
-        queue.push(new HuffNode(
-                pair.first,
-                pair.second
-        ));
+    for (int i = 0; i < f_map.size(); i++) {
+        char key = i;
+        unsigned int freq = f_map[i];
+
+        if (f_map[i] > 0) {
+            queue.push(new HuffNode(key, freq));
+        }
     }
 
     // second step: iterates until the queue > 1
@@ -41,9 +43,8 @@ HuffNode *build_huffman_tree(FrequencyMap &data_map) {
     return tree;
 }
 
-void encode_tree(HuffNode *node, string partial_enc, unordered_map<char, string> &map) {
+void encode_tree(HuffNode *node, const string& partial_enc, HuffMap &map) {
     // DFS Recursive algorithm
-    // TODO si può parallelizzare, mettendo la map con lock e facendo l'algoritmo non ricorsivo
 
     if (node == nullptr) {
         // we reached the end of the tree
@@ -51,7 +52,7 @@ void encode_tree(HuffNode *node, string partial_enc, unordered_map<char, string>
     }
 
     if (node->is_leaf()) {
-        map.insert({node->get_char(), partial_enc});
+        map[node->get_char()] = partial_enc;
     }
 
     // go to left

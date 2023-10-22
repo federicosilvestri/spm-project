@@ -291,3 +291,5 @@ benchmark_workspace/out
 cmake-build-release/
 cmake-build-docker-debug
 cmake-build-docker-release
+cmake-build-remote
+cmake-build-docker

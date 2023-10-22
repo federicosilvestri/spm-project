@@ -17,13 +17,13 @@ void padding(string *binary) {
     }
 }
 
-string seq_mapping(HuffMap &huff_map, const string *file_content) {
+string seq_mapping(HuffMap &huff_map, const string& file_content) {
     /*
      * Maps the content of the file into a binary code.
      */
     string encoded;
 
-    for (char c: *file_content) {
+    for (char c: file_content) {
         encoded += huff_map.at(c);
     }
 

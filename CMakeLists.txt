@@ -16,10 +16,10 @@ set(CMAKE_CXX_COMPILER g++)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 # Set the options for debug target
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
+#set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
 
 # Set the options for release target
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
+# set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
 
 add_executable(spm_project
         src/main.cpp
@@ -45,7 +45,6 @@ add_executable(spm_project
         src/common/write.hpp
         src/utils/my_timer.cpp
         src/utils/my_timer.hpp
-        src/common/frequency.hpp
         src/thr/stages/thr_mapping.cpp
         src/thr/stages/thr_mapping.hpp
         src/seq/stages/seq_transform.cpp
@@ -56,4 +55,12 @@ add_executable(spm_project
         src/thr/stages/thr_read.hpp
         src/seq/stages/seq_read.hpp
         src/seq/stages/seq_read.cpp
+        src/fastflow/ff_impl.cpp
+        src/fastflow/ff_impl.hpp
+        src/fastflow/stages/ff_freq.hpp
+        src/fastflow/stages/ff_freq.cpp
+        #src/fastflow/stages/ff_mapping.cpp
+        #src/fastflow/stages/ff_mapping.hpp
+        # src/fastflow/stages/ff_transform.cpp
+        # src/fastflow/stages/ff_transform.hpp
 )

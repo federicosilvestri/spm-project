@@ -7,13 +7,13 @@
 
 using namespace std;
 
-void write_compressed_file(string& content, const string &file_output) {
+void write_compressed_file(stringstream& ascii_stream, const string &file_output) {
     ofstream fp(file_output, ios::out | ios::trunc);
     if (!fp.is_open()) {
         throw invalid_argument("Cannot open the file for writing the compressed file.");
     }
 
     // stream operator
-    fp << content;
+    fp << ascii_stream.rdbuf();
     fp.close();
 }

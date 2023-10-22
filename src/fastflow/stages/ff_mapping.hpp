@@ -1,10 +1,9 @@
 //
-// Created by federicosilvestri on 17/10/23.
+// Created by federicosilvestri on 20/10/23.
 //
 
-#ifndef SPM_PROJECT_THR_MAPPING_HPP
-#define SPM_PROJECT_THR_MAPPING_HPP
-
+#ifndef SPM_PROJECT_FF_MAPPING_HPP
+#define SPM_PROJECT_FF_MAPPING_HPP
 #include "string"
 #include "vector"
 #include "sstream"
@@ -17,6 +16,6 @@
  * @param file_content The file content
  * @return A string of binary characters
  */
-std::string thr_mapping(HuffMap &huff_map, const std::string& file_content, unsigned int p_degree);
+std::string ff_mapping(HuffMap &huff_map, const std::string& file_content, unsigned int p_degree);
 
-#endif //SPM_PROJECT_THR_MAPPING_HPP
+#endif //SPM_PROJECT_FF_MAPPING_HPP

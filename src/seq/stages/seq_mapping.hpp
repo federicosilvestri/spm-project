@@ -13,6 +13,6 @@
  * @param file_content The content of the file
  * @return The binary string.
  */
-std::string seq_mapping(HuffMap &huff_map, const std::string *file_content);
+std::string seq_mapping(HuffMap &huff_map, const std::string& file_content);
 
 #endif //SPM_PROJECT_SEQ_MAPPING_HPP
