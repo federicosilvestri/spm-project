@@ -1,4 +1,3 @@
-from pathlib import Path
 import re
 import pandas as pd
 
@@ -32,7 +31,7 @@ def standardize_time(time_str: str) -> int:
         raise ValueError(f"The string \"{time_str}\" is not convertible to time!")
 
 
-def get_standardized_measures(csv_file: Path, excluded_columns=None) -> pd.DataFrame:
+def get_standardized_measures(csv_file: str, excluded_columns=None) -> pd.DataFrame:
     if excluded_columns is None:
         excluded_columns = []
     df = pd.read_csv(csv_file)
