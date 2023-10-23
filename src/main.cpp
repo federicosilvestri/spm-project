@@ -94,8 +94,13 @@ int main(int argc, char *argv[]) {
         logger->Log("Starting THR implementation execution", LogLevel::DEBUG);
         thr_impl(in_file, out_file, parallelism_degree, enable_measures);
     } else if ("FF" == par_choice) {
+#ifndef FF_DISABLE
+        logger->Log("Fastflow is not enabled!", LogLevel::ERROR);
+#else
         logger->Log("Starting FF implementation execution", LogLevel::DEBUG);
         ff_impl(in_file, out_file, parallelism_degree, enable_measures);
+
+#endif
     } else {
         cerr << "The parallelization method is not supported." << endl;
         print_usage(string(argv[0]));

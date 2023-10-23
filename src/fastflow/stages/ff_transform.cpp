@@ -23,7 +23,7 @@ stringstream ff_transform(string &binary, unsigned int p_degree) {
             p_degree,
             1,
             0,
-            [chunk_size, p_degree, &binary, &locally_transformed](const long i) {
+            [chunk_size, &binary, &locally_transformed](const long i) {
                 unsigned int begin = i * chunk_size * 8;
                 unsigned int end = min(begin + chunk_size * 8, binary.size());
 
