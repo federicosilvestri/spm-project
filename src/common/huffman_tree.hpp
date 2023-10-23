@@ -20,7 +20,7 @@ class HuffNode {
     /**
      * @brief Represented character
      */
-    char character;
+    unsigned char character;
     /**
      * @brief Frequency related to the represented character.
      */
@@ -44,7 +44,7 @@ public:
      * @param right the right node, default is nullptr
      * @param leaf flag that indicates that node contains character info.
      */
-    HuffNode(char character, unsigned int freq, HuffNode *left = nullptr, HuffNode *right = nullptr, bool leaf = true);
+    HuffNode(unsigned char character, unsigned int freq, HuffNode *left = nullptr, HuffNode *right = nullptr, bool leaf = true);
 
     /**
      * @brief Destructor for the object.
@@ -61,7 +61,7 @@ public:
      * @brief Get the character for this node, if it is not an "up" Node.
      * @return character value.
      */
-    char get_char();
+    unsigned char get_char();
 
     /**
      * @brief Return true if the node is a leaf, and than contains a character.

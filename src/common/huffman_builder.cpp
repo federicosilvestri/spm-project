@@ -18,7 +18,7 @@ HuffNode *build_huffman_tree(FrequencyMap &f_map) {
 
     // first step: push all data inside the queue.
     for (int i = 0; i < f_map.size(); i++) {
-        char key = i;
+        unsigned char key = i;
         unsigned int freq = f_map[i];
 
         if (f_map[i] > 0) {

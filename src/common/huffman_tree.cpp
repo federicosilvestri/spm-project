@@ -5,7 +5,7 @@
 #include "huffman_tree.hpp"
 #include "../utils/logger.hpp"
 
-HuffNode::HuffNode(char character, unsigned int freq, HuffNode *left, HuffNode *right, bool leaf) {
+HuffNode::HuffNode(unsigned char character, unsigned int freq, HuffNode *left, HuffNode *right, bool leaf) {
     HuffNode::character = character;
     HuffNode::freq = freq;
     HuffNode::left = left;
@@ -27,7 +27,7 @@ unsigned int HuffNode::get_freq() {
     return HuffNode::freq;
 }
 
-char HuffNode::get_char() {
+unsigned char HuffNode::get_char() {
     if (!HuffNode::leaf) {
         throw std::invalid_argument("This node does not contain a character, it's defined as UP node.");
     }
