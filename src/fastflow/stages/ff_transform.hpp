@@ -9,10 +9,10 @@
 
 /**
  * @brief Transform stream of binary data into ascii characters.
- * @param binary_stream the chunks to be encoded
+ * @param binary the chunks to be encoded
  * @param p_degree the degree of parallelism
  * @return character stream
  */
-std::stringstream ff_transform(std::string& binary_stream, unsigned int p_degree);
+std::stringstream ff_transform(std::string& binary, unsigned int p_degree);
 
 #endif //SPM_PROJECT_FF_TRANSFORM_HPP

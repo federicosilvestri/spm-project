@@ -59,8 +59,8 @@ add_executable(spm_project
         src/fastflow/ff_impl.hpp
         src/fastflow/stages/ff_freq.hpp
         src/fastflow/stages/ff_freq.cpp
-        #src/fastflow/stages/ff_mapping.cpp
-        #src/fastflow/stages/ff_mapping.hpp
-        # src/fastflow/stages/ff_transform.cpp
-        # src/fastflow/stages/ff_transform.hpp
+        src/fastflow/stages/ff_mapping.cpp
+        src/fastflow/stages/ff_mapping.hpp
+        src/fastflow/stages/ff_transform.cpp
+        src/fastflow/stages/ff_transform.hpp
 )

@@ -13,6 +13,7 @@ std::string ff_mapping(HuffMap &huff_map, const std::string &file_content, unsig
 
     instance.parallel_reduce_static(
             mapped,
+            "",
             0,
             file_content.size(),
             1,
@@ -23,8 +24,7 @@ std::string ff_mapping(HuffMap &huff_map, const std::string &file_content, unsig
             },
             [](string &mapped, const string &local) {
                 mapped += local;
-            },
-            p_degree
+            }
     );
 
     auto padding = string(8 - (mapped.size() % 8), '0');

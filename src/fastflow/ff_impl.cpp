@@ -39,13 +39,13 @@ void ff_impl(const string &file_input, const string &file_output, int p_degree, 
     timer.stop();
 
     // STAGE 4: Transform the binary string to ascii
-//    timer.start("TRANSFORM");
-//    auto binary_steam = ff_transform(mapped_string, p_degree);
-//    timer.stop();
+    timer.start("TRANSFORM");
+    auto binary_steam = ff_transform(mapped_string, p_degree);
+    timer.stop();
 
     // STAGE 5: Writing into fs
     timer.start("WRITE");
-
+    write_compressed_file(binary_steam, file_output);
     timer.stop();
 
 
