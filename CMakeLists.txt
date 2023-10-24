@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
+OPTION(FF_DISABLE "Option description" OFF) # Disabled by default
 
 # Set the options for debug target
 #set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
@@ -25,6 +26,7 @@ set(CMAKE_CXX_FLAGS "-ftree-loop-vectorize")
 
 # Add files
 if (FF_DISABLE)
+    add_definitions(-DFF_DISABLE)
     message("Fastflow DISABLED")
 
     add_executable(spm_project
