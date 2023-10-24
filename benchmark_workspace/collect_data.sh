@@ -120,7 +120,7 @@ for ((s=MIN_FILE_SIZE; s<=MAX_FILE_SIZE; s+=FILE_SIZE_STEP)); do
     FF_TEMP_RESULT_FILE="$RESULTS_FOLDER/ff_$p.temp.txt"
     for ((i=0; i<EXEC_N;i++)); do
       print_progress $s "FF" $p $((i+1))
-      ./spm_project THR "$FILE_IN" "$FILE_OUT" "$p" -M >> $FF_TEMP_RESULT_FILE
+      ./spm_project FF "$FILE_IN" "$FILE_OUT" "$p" -M >> $FF_TEMP_RESULT_FILE
     done
   ## parse the file into csv
     python b_tools/output_parser.py $FF_TEMP_RESULT_FILE "$RESULTS_FOLDER/ff_temp_$p.csv"
