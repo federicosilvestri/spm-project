@@ -19,10 +19,11 @@ def compute_performances(file_dim: int):
     thr_data['SP_IO'] = seq_data['TOTAL'] / thr_data['TOTAL']
     ff_data['SP_IO'] = seq_data['TOTAL'] / ff_data['TOTAL']
 
-    seq_io_exc = seq_data['FREQCALC'] + seq_data['HUFFBUILD'] + seq_data['MAP'] + seq_data['TRANSFORM']
-    thr_data['TOTAL_-IO'] = thr_data['TOTAL'] - thr_data['READ'] - thr_data['WRITE']
+    seq_io_exc = seq_data['TOTAL'] - (seq_data['READ'] + seq_data['WRITE'])
+
+    thr_data['TOTAL_-IO'] = thr_data['TOTAL'] - (thr_data['READ'] + thr_data['WRITE'])
     thr_data['SP_-IO'] = seq_io_exc / thr_data['TOTAL_-IO']
-    ff_data['TOTAL_-IO'] = ff_data['TOTAL'] - ff_data['READ'] - ff_data['WRITE']
+    ff_data['TOTAL_-IO'] = ff_data['TOTAL'] - (ff_data['READ'] + ff_data['WRITE'])
     ff_data['SP_-IO'] = seq_io_exc / ff_data['TOTAL_-IO']
 
     thr_t1 = thr_data[thr_data['P_DEGREE'] == 1]['TOTAL'][0]
