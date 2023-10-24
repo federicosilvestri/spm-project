@@ -4,19 +4,17 @@
 
 #include "thr_transform.hpp"
 #include "vector"
-#include "future"
+#include "thread"
 #include "bitset"
 
 using namespace std;
 
-stringstream transform_worker(std::string &binary_string, unsigned int begin, unsigned int end) {
-    stringstream ss;
-    for (auto i = begin; i < end; i += 8) {
+void transform_worker(std::string &binary_string, unsigned int begin, unsigned int end, string& ss, unsigned int ss_begin) {
+    for (unsigned int i = begin, j = ss_begin; i < end; i += 8, j += 1) {
         bitset<8> group(binary_string.substr(i, 8));
         char c = (char) (group.to_ulong() & 0xFF);
-        ss << c;
+        ss[j] = c;
     }
-    return ss;
 }
 
 
@@ -32,22 +30,30 @@ stringstream thr_transform(string &binary, unsigned int p_degree) {
     if (chunk_size < 8) {
         throw invalid_argument("Program should be run sequentially");
     }
-    vector<future<stringstream>> futures(p_degree);
+
+    vector<thread> workers(p_degree);
+    // Preallocate the mapped string
+    string mapped(block_size, '\0');
 
     // starting threads
     for (auto i = 0; i < p_degree; i++) {
         unsigned int begin = i * chunk_size * 8;
         unsigned int end = min(begin + chunk_size * 8, binary.size());
+        unsigned int ss_begin = i * chunk_size;
 
-        futures[i] = async(launch::async, transform_worker, ref(binary), begin, end);
+        auto pFunction = [begin, end, ss_begin, &binary, &mapped]() {
+            transform_worker(binary, begin, end, mapped, ss_begin);
+        };
+        workers[i] = thread(pFunction);
     }
 
     // collecting futures value and merge the result into the stream
-    stringstream final_stream;
-    for (auto &fut: futures) {
-        stringstream tmp = fut.get();
-        final_stream << tmp.rdbuf();
+    for (auto &worker: workers) {
+        worker.join();
     }
+
+    stringstream final_stream;
+    final_stream << mapped;
 
     return final_stream;
 }

@@ -21,7 +21,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 # Set the options for release target
 # set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
 
-set(CMAKE_CXX_FLAGS "-O3")
+set(CMAKE_CXX_FLAGS "-ftree-loop-vectorize")
 
 # Add files
 if (FF_DISABLE)

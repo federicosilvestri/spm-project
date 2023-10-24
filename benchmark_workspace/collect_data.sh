@@ -70,6 +70,10 @@ rm -rf $FILE_OUT_FOLDER && mkdir -p $FILE_OUT_FOLDER
 rm -rf $RESULTS_FOLDER && mkdir -p $RESULTS_FOLDER
 
 
+function print_progress() {
+    echo -ne "F_SIZE=$1/$MAX_FILE_SIZE STEP=$2 P_DEGREE=$3/$MAX_P_DEGREE EXEC_N=$4/$EXEC_N\r"
+}
+
 #
 # Iterating for file size
 #
@@ -80,67 +84,52 @@ for ((s=MIN_FILE_SIZE; s<=MAX_FILE_SIZE; s+=FILE_SIZE_STEP)); do
   #
   # Sequential benchmarking
   #
-  echo "Starting SEQ benchmark"
   SEQ_TEMP_RESULT_FILE="$RESULTS_FOLDER/seq.temp.txt"
-  echo "Executing the sequential version"
   for ((i=0; i<EXEC_N; i++)); do
-    echo -ne "Executing $((i+1))/$EXEC_N\r"
+    print_progress $s "SEQ" 0 $((i+1))
     ./spm_project SEQ "$FILE_IN" "$FILE_OUT" 0 -M >> $SEQ_TEMP_RESULT_FILE
   done
   # parse the file into csv
   python b_tools/output_parser.py $SEQ_TEMP_RESULT_FILE "$RESULTS_FOLDER/sequential_$s.csv"
   rm $SEQ_TEMP_RESULT_FILE
-  echo "SEQ benchmark finished"
 
 
   #
   # Parallel benchmarking (THR)
   #
-  echo "Starting THR benchmark"
   for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
-    echo "P_DEGREE = $p"
     THR_TEMP_RESULT_FILE="$RESULTS_FOLDER/thr_$p.temp.txt"
     for ((i=0; i<EXEC_N;i++)); do
-      echo -ne "Executing $((i+1))/$EXEC_N\r"
+      print_progress $s "THR" $p $((i+1))
       ./spm_project THR "$FILE_IN" "$FILE_OUT" "$p" -M >> $THR_TEMP_RESULT_FILE
     done
     ## parse the file into csv
     python b_tools/output_parser.py $THR_TEMP_RESULT_FILE "$RESULTS_FOLDER/thr_temp_$p.csv"
     rm $THR_TEMP_RESULT_FILE
-    echo -e "\nDone!"
   done
-  echo "Merging files"
   python b_tools/merge_results.py "$RESULTS_FOLDER/thr_temp_" "$MIN_P_DEGREE" "$MAX_P_DEGREE" "$P_DEGREE_STEP" "$RESULTS_FOLDER/thr_$s.csv"
-  echo "Deleting temp files..."
   for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
     rm "$RESULTS_FOLDER/thr_temp_$p.csv"
   done
-  echo "THR benchmark finished"
 
 
   #
   # Parallel benchmarking (FF)
   #
-  echo "Starting FF benchmark"
   for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
-    echo "P_DEGREE = $p"
     FF_TEMP_RESULT_FILE="$RESULTS_FOLDER/ff_$p.temp.txt"
     for ((i=0; i<EXEC_N;i++)); do
-      echo -ne "Executing $((i+1))/$EXEC_N\r"
+      print_progress $s "FF" $p $((i+1))
       ./spm_project THR "$FILE_IN" "$FILE_OUT" "$p" -M >> $FF_TEMP_RESULT_FILE
     done
   ## parse the file into csv
     python b_tools/output_parser.py $FF_TEMP_RESULT_FILE "$RESULTS_FOLDER/ff_temp_$p.csv"
     rm $FF_TEMP_RESULT_FILE
-    echo -e "\nDone!"
     done
-    echo "Merging files"
     python b_tools/merge_results.py "$RESULTS_FOLDER/ff_temp_" "$MIN_P_DEGREE" "$MAX_P_DEGREE" "$P_DEGREE_STEP" "$RESULTS_FOLDER/ff_$s.csv"
-    echo "Deleting temp files..."
     for ((p=MIN_P_DEGREE; p<=MAX_P_DEGREE; p+=P_DEGREE_STEP)); do
       rm "$RESULTS_FOLDER/ff_temp_$p.csv"
     done
-    echo "FF benchmark finished"
 done
 
-echo "Done"
+echo -e "\nDone"

@@ -25,4 +25,5 @@ struct FrequencyMap : public std::array<unsigned int, 256> {
  */
 struct HuffMap : public std::array<std::string, 256> {};
 
+
 #endif //SPM_PROJECT_DATA_TYPES_HPP
