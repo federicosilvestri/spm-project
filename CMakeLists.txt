@@ -14,15 +14,16 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-OPTION(FF_DISABLE "Option description" OFF) # Disabled by default
+OPTION(FF_DISABLE "Disable fast flow for local testing" OFF) # Disabled by default
+
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
 
 # Set the options for debug target
-#set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
-
-# Set the options for release target
-# set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
-
-set(CMAKE_CXX_FLAGS "-ftree-loop-vectorize")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # Add files
 if (FF_DISABLE)

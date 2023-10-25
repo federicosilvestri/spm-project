@@ -34,7 +34,7 @@ int test_functional_calcfreq(string &file_input) {
 
     CHK_TRUE(m1.size() == m2.size());
 
-    for (auto i = 0; i < m1.size(); i++) {
+    for (auto i = 0L; i < m1.size(); i++) {
         CHK_EQ(m1[i], m2[i]);
     }
 
@@ -49,7 +49,7 @@ int test_huffman_build(string &file_input) {
     auto huff_map = build_huffman_map(huff_tree);
 
     // checking maps
-    for (int i = 0; i < freq_map.size(); i++) {
+    for (unsigned int i = 0; i < freq_map.size(); i++) {
         if (freq_map[i] > 0) {
             CHK_FALSE(huff_map[i].empty());
         }

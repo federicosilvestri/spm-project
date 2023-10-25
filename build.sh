@@ -11,10 +11,10 @@ rm -rf build && mkdir build
 cd build
 
 # use cMake tool to create the main makefile
-cmake .. -DFF_DISABLE=OFF
+cmake .. -DFF_DISABLE=ON -DCMAKE_BUILD_TYPE=Release
 
 # start the compilation
-make VERBOSE=1
+make
 
 # leave building directory
 echo "Leaving building directory and copying the binary file to benchmark_workspace.."
