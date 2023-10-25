@@ -3,7 +3,6 @@
 //
 
 #include "huffman_map.hpp"
-#include "iostream"
 #include "vector"
 #include "queue"
 
@@ -19,7 +18,7 @@ HuffNode *build_huffman_tree(FrequencyMap &f_map) {
 
     // first step: push all data inside the queue.
     for (int i = 0; i < f_map.size(); i++) {
-        unsigned char key = i;
+        auto key = static_cast<unsigned char>(i);
         unsigned int freq = f_map[i];
 
         if (f_map[i] > 0) {
@@ -46,21 +45,18 @@ HuffNode *build_huffman_tree(FrequencyMap &f_map) {
 
 void encode_tree(HuffNode *node, HuffCode partial_node, HuffMap &map) {
     // DFS Recursive algorithm
-
-    if (node == nullptr) {
-        // we reached the end of the tree
-        return;
-    }
-
     if (node->is_leaf()) {
-        cout << "CHAR=" << node->get_char() << " INSERTED" << endl;
         map.insert({node->get_char(), partial_node});
     }
 
-    // go to left
-    encode_tree(node->get_left(), partial_node.add(false), map);
-    // go to right
-    encode_tree(node->get_left(), partial_node.add(true), map);
+    if (node->get_left() != nullptr) {
+        // go to left
+        encode_tree(node->get_left(), partial_node.add(false), map);
+    }
+    if (node->get_right() != nullptr) {
+        // go to right
+        encode_tree(node->get_right(), partial_node.add(true), map);
+    }
 }
 
 HuffMap build_huffman_map(HuffNode *tree) {

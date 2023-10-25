@@ -9,6 +9,7 @@
 #include "string"
 #include "stdexcept"
 #include "unordered_map"
+#include "iostream"
 
 /**
  * @brief Definition of Frequency Map as a static fixed size array.

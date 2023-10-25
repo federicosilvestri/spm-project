@@ -10,7 +10,6 @@
 #include "stages/seq_freq.h"
 #include "../common/huffman_map.hpp"
 #include "stages/seq_mapping.hpp"
-#include "stages/seq_transform.hpp"
 #include "../common/write.hpp"
 
 using namespace std;
@@ -34,10 +33,12 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
     auto huff_map = build_huffman_map(huff_tree);
     timer.stop();
 
+
     // STAGE 2: Encoding the file into memory
     timer.start("MAP");
     auto mapped_string = seq_mapping(huff_map, file_content);
     timer.stop();
+
 
     // STAGE 3: Writing into fs
     timer.start("WRITE");
