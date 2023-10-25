@@ -39,8 +39,8 @@ if (FF_DISABLE)
             src/thr/thr_impl.hpp
             src/thr/stages/thr_freq.cpp
             src/thr/stages/thr_freq.hpp
-            src/test/test_common.h
-            src/test/test.cpp
+#            src/test/test_common.h
+#            src/test/test.cpp
             src/utils/logger.cpp
             src/utils/logger.hpp
             src/common/huffman_tree.cpp

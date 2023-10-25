@@ -43,7 +43,7 @@ HuffNode *build_huffman_tree(FrequencyMap &f_map) {
     return tree;
 }
 
-void encode_tree(HuffNode *node, const string& partial_enc, HuffMap &map) {
+void encode_tree(HuffNode *node, HuffCode partial_node, HuffMap &map) {
     // DFS Recursive algorithm
 
     if (node == nullptr) {
@@ -52,19 +52,19 @@ void encode_tree(HuffNode *node, const string& partial_enc, HuffMap &map) {
     }
 
     if (node->is_leaf()) {
-        map[node->get_char()] = partial_enc;
+        map[node->get_char()] = partial_node;
     }
 
     // go to left
-    encode_tree(node->get_left(), partial_enc + "0", map);
+    encode_tree(node->get_left(), partial_node.add(false), map);
     // go to right
-    encode_tree(node->get_right(), partial_enc + "1", map);
+    encode_tree(node->get_left(), partial_node.add(true), map);
 }
 
 HuffMap build_huffman_map(HuffNode *tree) {
     HuffMap huff_map;
-    string encoded_string;
+    HuffCode huff_code;
 
-    encode_tree(tree, encoded_string, huff_map);
+    encode_tree(tree, huff_code, huff_map);
     return huff_map;
 }

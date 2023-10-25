@@ -23,4 +23,5 @@ HuffNode* build_huffman_tree(FrequencyMap &f_map);
  */
 HuffMap build_huffman_map(HuffNode* tree);
 
+
 #endif //SPM_PROJECT_HUFFMAN_MAP_HPP

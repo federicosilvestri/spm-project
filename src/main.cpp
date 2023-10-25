@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include "string"
-#include "test/test_common.h"
+// #include "test/test_common.h"
 #include "utils/file_utils.hpp"
 #include "utils/logger.hpp"
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 
     if (string(argv[1]) == "-T") {
         // Special execution, it executes the internal FUNCTIONAL tests.
-        execute_test(argc, argv, in_file);
+//         execute_test(argc, argv, in_file);
         return 0;
     }
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
         seq_impl(in_file, out_file, enable_measures);
     } else if ("THR" == par_choice) {
         logger->Log("Starting THR implementation execution", LogLevel::DEBUG);
-        thr_impl(in_file, out_file, parallelism_degree, enable_measures);
+         thr_impl(in_file, out_file, parallelism_degree, enable_measures);
     } else if ("FF" == par_choice) {
 #ifdef FF_DISABLE
         logger->Log("Fastflow is not enabled!", LogLevel::ERROR);

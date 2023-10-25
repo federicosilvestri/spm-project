@@ -12,7 +12,7 @@ string mapper_worker(HuffMap &huffMap, const string &file_content, long start, l
     string encoded = "";
     for (auto i = start; i <= end; i++) {
         char c = file_content[i];
-        encoded += huffMap[c];
+        encoded += huffMap[c].code;
     }
     return encoded;
 }

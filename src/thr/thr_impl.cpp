@@ -60,12 +60,12 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 3: transform the EncodedChunk to ascii
     timer.start("TRANSFORM");
-    auto char_stream = thr_transform(mapped_stream, p_degree);
+//    auto char_stream = thr_transform(mapped_stream, p_degree);
     timer.stop();
 
     // STAGE 4: Writing into fs
     timer.start("WRITE");
-    write_compressed_file(char_stream, file_output);
+    write_compressed_file(mapped_stream, file_output);
     timer.stop();
 
     /*

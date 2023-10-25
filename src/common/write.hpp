@@ -8,6 +8,6 @@
 #include "sstream"
 
 // TODO COMMENT
-void write_compressed_file(std::stringstream& ascii_stream, const std::string &file_output);
+void write_compressed_file(std::string& binary, const std::string &file_output);
 
 #endif //SPM_PROJECT_WRITE_HPP

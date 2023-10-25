@@ -39,15 +39,9 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
     auto mapped_string = seq_mapping(huff_map, file_content);
     timer.stop();
 
-
-    // STAGE 3: Transform the binary string to ascii
-    timer.start("TRANSFORM");
-    auto stream = seq_transform(mapped_string);
-    timer.stop();
-
-    // STAGE 4: Writing into fs
+    // STAGE 3: Writing into fs
     timer.start("WRITE");
-    write_compressed_file(stream, file_output);
+    write_compressed_file(mapped_string, file_output);
     timer.stop();
 
 
