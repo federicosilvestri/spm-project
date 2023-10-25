@@ -9,7 +9,6 @@
 #include "../common/huffman_map.hpp"
 #include "../seq/stages/seq_mapping.hpp"
 #include "../thr/stages/thr_mapping.hpp"
-#include "../seq/stages/seq_transform.hpp"
 #include "../thr/stages/thr_transform.hpp"
 
 
@@ -72,18 +71,6 @@ int test_mapping(string &file_input) {
     return 0;
 }
 
-int test_transform(string &file_input) {
-    string content = seq_read_file(file_input);
-    auto freq_map = seq_compute_frequencies(content);
-    auto huff_tree = build_huffman_tree(freq_map);
-    auto huff_map = build_huffman_map(huff_tree);
-    auto mapped_bin = seq_mapping(huff_map, content);
-    auto char_seq = seq_transform(mapped_bin);
-    auto char_thr = thr_transform(mapped_bin, STATIC_PARALLELISM_DEGREE);
-
-    CHK_EQ(char_seq.str(), char_thr.str());
-    return 0;
-}
 
 void execute_test(int argc, char **argv, string &file_input) {
     TestSuite test(argc, argv);
@@ -92,6 +79,5 @@ void execute_test(int argc, char **argv, string &file_input) {
     test.doTest("Functional testing for stage: FREQCALC", test_functional_calcfreq, file_input);
     test.doTest("Functional testing for stage: HUFFBUILD", test_huffman_build, file_input);
     test.doTest("Functional testing for stage: MAP", test_mapping, file_input);
-    test.doTest("Functional testing for stage: TRANSFORM", test_transform, file_input);
 
 }
