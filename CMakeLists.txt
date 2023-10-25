@@ -17,12 +17,10 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 OPTION(FF_DISABLE "Option description" OFF) # Disabled by default
 
 # Set the options for debug target
-#set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
 
 # Set the options for release target
-# set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
-
-# set(CMAKE_CXX_FLAGS "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # Add files
 if (FF_DISABLE)
@@ -39,8 +37,8 @@ if (FF_DISABLE)
             src/thr/thr_impl.hpp
             src/thr/stages/thr_freq.cpp
             src/thr/stages/thr_freq.hpp
-#            src/test/test_common.h
-#            src/test/test.cpp
+            src/test/test_common.h
+            src/test/test.cpp
             src/utils/logger.cpp
             src/utils/logger.hpp
             src/common/huffman_tree.cpp

@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include "string"
-// #include "test/test_common.h"
+ #include "test/test_common.h"
 #include "utils/file_utils.hpp"
 #include "utils/logger.hpp"
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 
     if (string(argv[1]) == "-T") {
         // Special execution, it executes the internal FUNCTIONAL tests.
-//         execute_test(argc, argv, in_file);
+         execute_test(argc, argv, in_file);
         return 0;
     }
 

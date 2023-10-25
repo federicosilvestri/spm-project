@@ -51,7 +51,7 @@ int test_huffman_build(string &file_input) {
     // checking maps
     for (int i = 0; i < freq_map.size(); i++) {
         if (freq_map[i] > 0) {
-            CHK_FALSE(huff_map[i].empty());
+            CHK_TRUE(huff_map.contains(i));
         }
     }
 
@@ -66,8 +66,8 @@ int test_mapping(string &file_input) {
     auto mapped_bin = seq_mapping(huff_map, content);
     auto mapped_bin2 = thr_mapping(huff_map, content, STATIC_PARALLELISM_DEGREE);
 
-    CHK_EQ(mapped_bin.size() % 8, 0);
-    CHK_EQ(mapped_bin2.size() % 8, 0);
+    CHK_EQ(mapped_bin.size() % 8, 0); // non ha senso perché sono già ottetti
+    CHK_EQ(mapped_bin2.size() % 8, 0); // non ha senso perché sono già ottetti
     CHK_TRUE(mapped_bin == mapped_bin2);
     return 0;
 }
