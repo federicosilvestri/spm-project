@@ -7,27 +7,13 @@
 
 using namespace std;
 
-unsigned long compute_compressed_size(HuffMap &huff_map, const string &file_content) {
-    unsigned long size = 0L;
-
-    for (unsigned char c: file_content) {
-        HuffCode hc = huff_map.at(c);
-        size += hc.size;
-    }
-
-    return size;
-}
-
-
 string seq_mapping(HuffMap &huff_map, const string &file_content) {
     /*
      * Maps the content of the file into a binary code.
      */
-    auto size = compute_compressed_size(huff_map, file_content);
 
-    unsigned int current_index = 0;
     // Final stream of encoded chars.
-    vector<unsigned char> encoded(size);
+    vector<unsigned char> encoded;
     // Current Buffer
     unsigned char buff = 0;
     // Window size
@@ -55,7 +41,7 @@ string seq_mapping(HuffMap &huff_map, const string &file_content) {
         }
 
         if (w_size == 8) {
-            encoded[current_index++] = buff;
+            encoded.push_back(buff);
             buff = 0;
             w_size = 0;
         }
@@ -68,7 +54,7 @@ string seq_mapping(HuffMap &huff_map, const string &file_content) {
         }
 
         if (i == (file_content.size() - 1) && pending_bits) {
-            encoded[current_index++] = buff;
+            encoded.push_back(buff);
         }
 
     }

@@ -8,6 +8,7 @@
 #include "array"
 #include "string"
 #include "stdexcept"
+#include "unordered_map"
 
 /**
  * @brief Definition of Frequency Map as a static fixed size array.
@@ -63,8 +64,6 @@ struct HuffCode {
 /**
  * @brief Here I define for simplicity a new type for HuffMap.
  */
-struct HuffMap : public std::array<HuffCode, 256> {
-};
-
+typedef std::unordered_map<unsigned char, HuffCode> HuffMap;
 
 #endif //SPM_PROJECT_DATA_TYPES_HPP

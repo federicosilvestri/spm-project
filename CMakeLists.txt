@@ -22,7 +22,7 @@ OPTION(FF_DISABLE "Option description" OFF) # Disabled by default
 # Set the options for release target
 # set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fsanitize=thread -fstack-check -ftree-vectorize")
 
-set(CMAKE_CXX_FLAGS "-ftree-loop-vectorize")
+# set(CMAKE_CXX_FLAGS "-O3")
 
 # Add files
 if (FF_DISABLE)

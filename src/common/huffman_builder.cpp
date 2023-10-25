@@ -3,6 +3,7 @@
 //
 
 #include "huffman_map.hpp"
+#include "iostream"
 #include "vector"
 #include "queue"
 
@@ -52,7 +53,8 @@ void encode_tree(HuffNode *node, HuffCode partial_node, HuffMap &map) {
     }
 
     if (node->is_leaf()) {
-        map[node->get_char()] = partial_node;
+        cout << "CHAR=" << node->get_char() << " INSERTED" << endl;
+        map.insert({node->get_char(), partial_node});
     }
 
     // go to left
