@@ -25,7 +25,7 @@ reduce_two_maps(FrequencyMap &m1, FrequencyMap &m2) {
     FrequencyMap reduced;
     auto size = reduced.size();
 
-    for (int i = 0; i < size; i++) {
+    for (auto i = 0L; i < size; i++) {
         reduced[i] += m1[i] + m2[i];
     }
     return reduced;

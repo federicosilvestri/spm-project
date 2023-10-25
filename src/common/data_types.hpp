@@ -14,7 +14,7 @@
 /**
  * @brief Definition of Frequency Map as a static fixed size array.
  */
-struct FrequencyMap : public std::array<unsigned int, 256> {
+struct FrequencyMap : public std::array<unsigned long, 256> {
     /*
      * Overload the constructor to fill entire array to 0.
      */
@@ -33,13 +33,19 @@ struct HuffCode {
      */
     unsigned char code;
     /**
-     * @brief The size of the code (it must be always <=8.
+     * @brief The size of the code (it must be always <=8).
      */
     unsigned int size;
+
+    /**
+     * @brief Associated frequency for this code (Needed for PRE-computing the space)
+     */
+     unsigned long frequency;
 
     HuffCode() {
         code = 0;
         size = 0;
+        frequency = 0L;
     }
 
     [[nodiscard]] HuffCode add(bool right) const {
