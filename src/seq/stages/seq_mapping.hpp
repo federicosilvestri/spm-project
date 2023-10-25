@@ -5,7 +5,7 @@
 #ifndef SPM_PROJECT_SEQ_MAPPING_HPP
 #define SPM_PROJECT_SEQ_MAPPING_HPP
 #include "string"
-#include "../../common/huffman_map.hpp"
+#include "../../common/huffman_builder.hpp"
 
 /**
  * @brief Maps the file content of the file into a binary string.

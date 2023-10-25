@@ -13,7 +13,7 @@
 
 #include "../common/write.hpp"
 #include "stages/thr_freq.hpp"
-#include "../common/huffman_map.hpp"
+#include "../common/huffman_builder.hpp"
 #include "stages/thr_mapping.hpp"
 #include "stages/thr_transform.hpp"
 
@@ -57,13 +57,7 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
     auto mapped_stream = thr_mapping(huff_map, file_content, p_degree);
     timer.stop();
 
-
-    // STAGE 3: transform the EncodedChunk to ascii
-    timer.start("TRANSFORM");
-//    auto char_stream = thr_transform(mapped_stream, p_degree);
-    timer.stop();
-
-    // STAGE 4: Writing into fs
+    // STAGE 3: Writing into fs
     timer.start("WRITE");
     write_compressed_file(mapped_stream, file_output);
     timer.stop();

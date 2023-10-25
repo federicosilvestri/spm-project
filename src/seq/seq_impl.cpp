@@ -8,7 +8,7 @@
 
 #include "stages/seq_read.hpp"
 #include "stages/seq_freq.h"
-#include "../common/huffman_map.hpp"
+#include "../common/huffman_builder.hpp"
 #include "stages/seq_mapping.hpp"
 #include "../common/write.hpp"
 

@@ -6,7 +6,7 @@
 #include "../thr/stages/thr_read.hpp"
 #include "../seq/stages/seq_freq.h"
 #include "../thr/stages/thr_freq.hpp"
-#include "../common/huffman_map.hpp"
+#include "../common/huffman_builder.hpp"
 #include "../seq/stages/seq_mapping.hpp"
 #include "../thr/stages/thr_mapping.hpp"
 #include "../thr/stages/thr_transform.hpp"
@@ -65,8 +65,6 @@ int test_mapping(string &file_input) {
     auto mapped_bin = seq_mapping(huff_map, content);
     auto mapped_bin2 = thr_mapping(huff_map, content, STATIC_PARALLELISM_DEGREE);
 
-    CHK_EQ(mapped_bin.size() % 8, 0); // non ha senso perché sono già ottetti
-    CHK_EQ(mapped_bin2.size() % 8, 0); // non ha senso perché sono già ottetti
     CHK_TRUE(mapped_bin == mapped_bin2);
     return 0;
 }

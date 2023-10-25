@@ -2,8 +2,8 @@
 // Created by federicosilvestri on 13/10/23.
 //
 
-#ifndef SPM_PROJECT_HUFFMAN_MAP_HPP
-#define SPM_PROJECT_HUFFMAN_MAP_HPP
+#ifndef SPM_PROJECT_HUFFMAN_BUILDER_HPP
+#define SPM_PROJECT_HUFFMAN_BUILDER_HPP
 #include "huffman_tree.hpp"
 #include "unordered_map"
 
@@ -24,4 +24,4 @@ HuffNode* build_huffman_tree(FrequencyMap &f_map);
 HuffMap build_huffman_map(HuffNode* tree);
 
 
-#endif //SPM_PROJECT_HUFFMAN_MAP_HPP
+#endif //SPM_PROJECT_HUFFMAN_BUILDER_HPP

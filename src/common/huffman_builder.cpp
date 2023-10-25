@@ -2,7 +2,7 @@
 // Created by federicosilvestri on 13/10/23.
 //
 
-#include "huffman_map.hpp"
+#include "huffman_builder.hpp"
 #include "vector"
 #include "queue"
 

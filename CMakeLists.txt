@@ -44,7 +44,7 @@ if (FF_DISABLE)
             src/common/huffman_tree.cpp
             src/common/huffman_tree.hpp
             src/common/huffman_builder.cpp
-            src/common/huffman_map.hpp
+            src/common/huffman_builder.hpp
             src/seq/stages/seq_mapping.cpp
             src/seq/stages/seq_mapping.hpp
             src/common/write.cpp
@@ -80,7 +80,7 @@ else ()
             src/common/huffman_tree.cpp
             src/common/huffman_tree.hpp
             src/common/huffman_builder.cpp
-            src/common/huffman_map.hpp
+            src/common/huffman_builder.hpp
             src/seq/stages/seq_mapping.cpp
             src/seq/stages/seq_mapping.hpp
             src/common/write.cpp

@@ -7,7 +7,7 @@
 #include "string"
 #include "vector"
 #include "sstream"
-#include "../../common/huffman_map.hpp"
+#include "../../common/huffman_builder.hpp"
 
 
 /**
