@@ -15,7 +15,6 @@
 #include "stages/thr_freq.hpp"
 #include "../common/huffman_builder.hpp"
 #include "stages/thr_mapping.hpp"
-#include "stages/thr_transform.hpp"
 
 using namespace std;
 

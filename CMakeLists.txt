@@ -17,7 +17,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 OPTION(FF_DISABLE "Option description" OFF) # Disabled by default
 
 # Set the options for debug target
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
+#set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -O0 -fsanitize=thread -fstack-check -fstack-protector-strong -fno-omit-frame-pointer")
 
 # Set the options for release target
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
@@ -53,8 +53,6 @@ if (FF_DISABLE)
             src/utils/my_timer.hpp
             src/thr/stages/thr_mapping.cpp
             src/thr/stages/thr_mapping.hpp
-            src/thr/stages/thr_transform.cpp
-            src/thr/stages/thr_transform.hpp
             src/thr/stages/thr_read.cpp
             src/thr/stages/thr_read.hpp
             src/seq/stages/seq_read.hpp
@@ -89,8 +87,6 @@ else ()
             src/utils/my_timer.hpp
             src/thr/stages/thr_mapping.cpp
             src/thr/stages/thr_mapping.hpp
-            src/thr/stages/thr_transform.cpp
-            src/thr/stages/thr_transform.hpp
             src/thr/stages/thr_read.cpp
             src/thr/stages/thr_read.hpp
             src/seq/stages/seq_read.hpp

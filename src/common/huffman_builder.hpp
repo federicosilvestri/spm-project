@@ -24,4 +24,11 @@ HuffNode* build_huffman_tree(FrequencyMap &f_map);
 HuffMap build_huffman_map(HuffNode* tree);
 
 
+/**
+ * @brief Compute the size of compressed file, using as information the frequency and the size of the code.
+ * @param huff_map HuffMap to be used for computation
+ * @return number of bits of compressed file
+ */
+unsigned long compute_huffman_size(HuffMap &huff_map);
+
 #endif //SPM_PROJECT_HUFFMAN_BUILDER_HPP

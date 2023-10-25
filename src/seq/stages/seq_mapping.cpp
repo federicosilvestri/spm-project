@@ -7,24 +7,13 @@
 
 using namespace std;
 
-unsigned long compute_encoded_size(HuffMap &huff_map, const string &file_content) {
-    unsigned long size = 0L;
-
-    for (auto &c: file_content) {
-        auto code = huff_map.at(c);
-        size += code.size;
-    }
-
-    return size;
-}
-
 string seq_mapping(HuffMap &huff_map, const string &file_content) {
     /*
      * Maps the content of the file into a binary code.
      */
 
     // compute the size
-    auto final_size = compute_encoded_size(huff_map, file_content);
+    auto final_size = compute_huffman_size(huff_map);
     final_size = (final_size / 8) + (final_size % 8 != 0);
 
     // Final stream of encoded chars.

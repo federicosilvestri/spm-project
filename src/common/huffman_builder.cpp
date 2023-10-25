@@ -43,19 +43,20 @@ HuffNode *build_huffman_tree(FrequencyMap &f_map) {
     return tree;
 }
 
-void encode_tree(HuffNode *node, HuffCode partial_node, HuffMap &map) {
+void dfs_visit(HuffNode *node, HuffCode partial_node, HuffMap &map) {
     // DFS Recursive algorithm
     if (node->is_leaf()) {
+        partial_node.frequency = node->get_freq();
         map.insert({node->get_char(), partial_node});
     }
 
     if (node->get_left() != nullptr) {
         // go to left
-        encode_tree(node->get_left(), partial_node.add(false), map);
+        dfs_visit(node->get_left(), partial_node.add(false), map);
     }
     if (node->get_right() != nullptr) {
         // go to right
-        encode_tree(node->get_right(), partial_node.add(true), map);
+        dfs_visit(node->get_right(), partial_node.add(true), map);
     }
 }
 
@@ -63,6 +64,18 @@ HuffMap build_huffman_map(HuffNode *tree) {
     HuffMap huff_map;
     HuffCode huff_code;
 
-    encode_tree(tree, huff_code, huff_map);
+    dfs_visit(tree, huff_code, huff_map);
     return huff_map;
+}
+
+unsigned long compute_huffman_size(HuffMap &huff_map) {
+    /*
+     * For each element in the map sum the product of frequency and size :)
+     */
+    unsigned long compressed_size = 0L;
+    for (auto &p: huff_map) {
+        compressed_size += p.second.frequency * p.second.size;
+    }
+
+    return compressed_size;
 }

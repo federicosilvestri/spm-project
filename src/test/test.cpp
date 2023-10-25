@@ -9,7 +9,6 @@
 #include "../common/huffman_builder.hpp"
 #include "../seq/stages/seq_mapping.hpp"
 #include "../thr/stages/thr_mapping.hpp"
-#include "../thr/stages/thr_transform.hpp"
 
 
 #define STATIC_PARALLELISM_DEGREE 5
