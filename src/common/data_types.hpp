@@ -4,6 +4,7 @@
 
 #ifndef SPM_PROJECT_DATA_TYPES_HPP
 #define SPM_PROJECT_DATA_TYPES_HPP
+#pragma once
 
 #include "array"
 #include "string"
@@ -77,6 +78,16 @@ struct HuffCode {
 typedef std::unordered_map<unsigned char, HuffCode> HuffMap;
 
 /**
+ * @brief The size of window for output buffer
+ */
+typedef u_int8_t WINDOW_TYPE;
+
+/**
+ * @brief The size of the window (in bits).
+ */
+const size_t WINDOW_SIZE = sizeof(WINDOW_TYPE) * 8;
+
+/**
  * @brief Here I defined a struct for containing the compressed data, including metadata info.
  */
 struct OutputBuffer {
@@ -92,7 +103,7 @@ struct OutputBuffer {
     /**
      * @brief The payload.
      */
-    std::vector<std::vector<unsigned char>> buffer;
+    std::vector<std::vector<WINDOW_TYPE>> buffer;
 
 
     /**
@@ -102,7 +113,7 @@ struct OutputBuffer {
      */
 
     explicit OutputBuffer(unsigned int size) {
-        buffer = std::vector<std::vector<unsigned char>>(size);
+        buffer = std::vector<std::vector<WINDOW_TYPE>>(size);
         chunk_info = std::vector<u_int64_t>(size);
     }
 

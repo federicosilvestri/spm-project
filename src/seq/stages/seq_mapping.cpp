@@ -18,7 +18,7 @@ OutputBuffer seq_mapping(HuffMap &huff_map, const string &file_content) {
 
     // Output buffer
     OutputBuffer ob(1);
-    ob.buffer[0] = vector<unsigned char>(final_size);
+    ob.buffer[0] = vector<WINDOW_TYPE>(final_size);
     ob.chunk_info[0] = final_size;
 
     // Current Buffer
@@ -39,17 +39,17 @@ OutputBuffer seq_mapping(HuffMap &huff_map, const string &file_content) {
         HuffCode hc = huff_map.at(read_char);
         pending_bits = false;
 
-        if (w_size + hc.size <= 8) {
+        if (w_size + hc.size <= WINDOW_SIZE) {
             buff |= (hc.code >> w_size);
             w_size += hc.size;
-        } else if (w_size + hc.size > 8) {
-            bits_written = 8 - w_size;
+        } else if (w_size + hc.size > WINDOW_SIZE) {
+            bits_written = WINDOW_SIZE - w_size;
             bits_to_write = hc.size - bits_written;
             buff |= (hc.code >> w_size);
-            w_size = 8;
+            w_size = WINDOW_SIZE;
         }
 
-        if (w_size == 8) {
+        if (w_size == WINDOW_SIZE) {
             ob.buffer[0][current_index++] = buff;
             buff = 0;
             w_size = 0;

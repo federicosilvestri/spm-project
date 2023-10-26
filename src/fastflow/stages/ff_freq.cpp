@@ -13,23 +13,28 @@ FrequencyMap ff_compute_frequencies(const std::string &content, unsigned int p_d
     ff::ParallelForReduce<FrequencyMap> instance(p_degree);
 
     instance.parallel_reduce_static(
-            f_map,
-            FrequencyMap(),
-            0,
-            content.size(),
-            1,
-            0,
+            f_map, // Initial value
+            FrequencyMap(), // Identify value
+            0, // starting index
+            content.size(), // ending index
+            1, // the loop step
+            0, // grain
+            /*
+             * The mapping function
+             */
             [&content](const long i, FrequencyMap &local) {
                 int index = static_cast<unsigned char>(content[i]);
                 local[index] += 1;
             },
+            /*
+             * The reduce function
+             */
             [](FrequencyMap &f_map, const FrequencyMap& local) {
                 for (int i = 0; i < f_map.size(); i++) {
                     f_map[i] += local[i];
                 }
             },
-            p_degree
-
+            p_degree // number of workers
     );
 
     return f_map;

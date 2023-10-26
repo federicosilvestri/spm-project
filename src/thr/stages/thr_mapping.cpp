@@ -33,17 +33,17 @@ void mapper_worker(HuffMap &huff_map, const string &file_content, long start, lo
         total_write += hc.size;
         pending_bits = false;
 
-        if (w_size + hc.size <= 8) {
+        if (w_size + hc.size <= WINDOW_SIZE) {
             buff |= (hc.code >> w_size);
             w_size += hc.size;
-        } else if (w_size + hc.size > 8) {
-            bits_written = 8 - w_size;
+        } else if (w_size + hc.size > WINDOW_SIZE) {
+            bits_written = WINDOW_SIZE - w_size;
             bits_to_write = hc.size - bits_written;
             buff |= (hc.code >> w_size);
-            w_size = 8;
+            w_size = WINDOW_SIZE;
         }
 
-        if (w_size == 8) {
+        if (w_size == WINDOW_SIZE) {
             out_buff.buffer[buff_index].push_back(buff);
             buff = 0;
             w_size = 0;

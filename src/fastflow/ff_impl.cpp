@@ -35,17 +35,12 @@ void ff_impl(const string &file_input, const string &file_output, int p_degree, 
 
     // STAGE 3: Encoding the file into memory
     timer.start("MAP");
-    auto mapped_string = ff_mapping(huff_map, file_content, p_degree);
-    timer.stop();
-
-    // STAGE 4: Transform the binary string to ascii
-    timer.start("TRANSFORM");
-//    auto binary_steam = ff_transform(mapped_string, p_degree);
+    auto output_buffer = ff_mapping(huff_map, file_content, p_degree);
     timer.stop();
 
     // STAGE 5: Writing into fs
     timer.start("WRITE");
-    write_compressed_file(mapped_string, file_output);
+    write_compressed_file(output_buffer, file_output);
     timer.stop();
 
 

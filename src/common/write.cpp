@@ -17,7 +17,7 @@ void write_compressed_file(OutputBuffer &out_buff, const string &file_output) {
 
     // Write the size of metadata (to allow decompression) using uint_16
     u_int16_t metadata_size = out_buff.chunk_info.size();
-    fp.write((const char *) &metadata_size, sizeof(u_int16_t));
+    fp.write((const char*) &metadata_size, sizeof(u_int16_t));
 
     // Write metadata info
     fp.write((const char *) &out_buff.chunk_info[0], sizeof(u_int64_t) * out_buff.chunk_info.size());
@@ -25,7 +25,8 @@ void write_compressed_file(OutputBuffer &out_buff, const string &file_output) {
 
     // Write the payload
     for (auto &inter_buff: out_buff.buffer) {
-        copy(inter_buff.cbegin(), inter_buff.cend(), ostreambuf_iterator<char>(fp));
+//        copy(inter_buff.cbegin(), inter_buff.cend(), ostreambuf_iterator<char>(fp));
+        fp.write((const char *) &inter_buff, (WINDOW_SIZE / 8) * inter_buff.size());
     }
 
     fp.close(); // forcing the flush
