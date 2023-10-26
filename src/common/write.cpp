@@ -26,7 +26,7 @@ void write_compressed_file(OutputBuffer &out_buff, const string &file_output) {
     // Write the payload
     for (auto &inter_buff: out_buff.buffer) {
 //        copy(inter_buff.cbegin(), inter_buff.cend(), ostreambuf_iterator<char>(fp));
-        fp.write((const char *) &inter_buff, (WINDOW_SIZE / 8) * inter_buff.size());
+        fp.write((const char *) &inter_buff[0], (WINDOW_SIZE / 8) * inter_buff.size());
     }
 
     fp.close(); // forcing the flush

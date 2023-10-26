@@ -80,7 +80,7 @@ typedef std::unordered_map<unsigned char, HuffCode> HuffMap;
 /**
  * @brief The size of window for output buffer
  */
-typedef u_int8_t WINDOW_TYPE;
+typedef u_int32_t WINDOW_TYPE;
 
 /**
  * @brief The size of the window (in bits).
