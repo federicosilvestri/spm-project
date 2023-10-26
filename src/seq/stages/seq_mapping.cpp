@@ -7,7 +7,7 @@
 
 using namespace std;
 
-string seq_mapping(HuffMap &huff_map, const string &file_content) {
+OutputBuffer seq_mapping(HuffMap &huff_map, const string &file_content) {
     /*
      * Maps the content of the file into a binary code.
      */
@@ -16,8 +16,11 @@ string seq_mapping(HuffMap &huff_map, const string &file_content) {
     auto final_size = compute_huffman_size(huff_map);
     final_size = (final_size / 8) + (final_size % 8 != 0);
 
-    // Final stream of encoded chars.
-    vector<unsigned char> encoded(final_size);
+    // Output buffer
+    OutputBuffer ob(1);
+    ob.buffer[0] = vector<unsigned char>(final_size);
+    ob.chunk_info[0] = final_size;
+
     // Current Buffer
     unsigned char buff = 0;
     // Window size
@@ -47,7 +50,7 @@ string seq_mapping(HuffMap &huff_map, const string &file_content) {
         }
 
         if (w_size == 8) {
-            encoded[current_index++] = buff;
+            ob.buffer[0][current_index++] = buff;
             buff = 0;
             w_size = 0;
         }
@@ -60,10 +63,10 @@ string seq_mapping(HuffMap &huff_map, const string &file_content) {
         }
 
         if (i == (file_content.size() - 1) && pending_bits) {
-            encoded[current_index++] = buff;
+            ob.buffer[0][current_index++] = buff;
         }
 
     }
 
-    return string{encoded.cbegin(), encoded.cend()};
+    return ob;
 }

@@ -22,27 +22,27 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
     string file_content = seq_read_file(file_input);
     timer.stop();
 
-    // STAGE 0: Reading and computing frequencies
+    // STAGE 1: Reading and computing frequencies
     timer.start("FREQCALC");
     auto freq_map = seq_compute_frequencies(file_content);
     timer.stop();
 
-    // STAGE 1: Computing Huffman Tree and Huffman Map
+    // STAGE 2: Computing Huffman Tree and Huffman Map
     timer.start("HUFFBUILD");
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
     timer.stop();
 
 
-    // STAGE 2: Encoding the file into memory
+    // STAGE 3: Encoding the file into memory
     timer.start("MAP");
-    auto mapped_string = seq_mapping(huff_map, file_content);
+    auto output_buffer = seq_mapping(huff_map, file_content);
     timer.stop();
 
 
-    // STAGE 3: Writing into fs
+    // STAGE 4: Writing into fs
     timer.start("WRITE");
-    write_compressed_file(mapped_string, file_output);
+    write_compressed_file(output_buffer, file_output);
     timer.stop();
 
 
