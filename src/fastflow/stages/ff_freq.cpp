@@ -4,6 +4,16 @@
 
 #include "ff_freq.hpp"
 #include "ff/parallel_for.hpp"
+#include "ff/node.hpp"
+
+using namespace ff;
+
+struct CharacterEmitter : ff_node_t<unsigned char> {
+    char *svc() {
+
+    }
+};
+
 
 FrequencyMap ff_compute_frequencies(const std::string &content, unsigned int p_degree) {
     /*
