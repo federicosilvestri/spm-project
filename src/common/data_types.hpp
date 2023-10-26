@@ -94,7 +94,7 @@ struct OutputBuffer {
 
     /**
      * @brief The metadata as a list of unsigned long (4Bytes) that represents the X significant bits of the chunk.
-     * If X is not a multiple of 8, it means that X + (X % 8)bits are padding bits.
+     * If X is not a multiple of 8, it means that X + (X - (X % 8))bits are padding bits.
      * Here I use a fixed width integer type that is uint_64 (8byte). It means that for each chunk I can
      * index at most 2^64 bit, hence a very big chunk..
      */
