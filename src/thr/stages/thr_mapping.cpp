@@ -66,11 +66,12 @@ void mapper_worker(HuffMap &huff_map, const string &file_content, long start, lo
 }
 
 
-OutputBuffer thr_mapping(HuffMap &huff_map, const string &file_content, unsigned int p_degree) {
+OutputBuffer thr_mapping(HuffMap &huff_map, const string &file_content, SuperThreadPool &tp) {
     /*
      * I split again the file into chunks, and I assign statically a chunk of data
      * to a thread. The task for each thread is equally complex and the effort of each thread is balanced.
      */
+    auto p_degree = tp.get_nw();
     unsigned int f_size = file_content.size();
     // adjusting the parallelism, computing chunk size or delta, is the same.
     unsigned int chunk_size = (f_size / p_degree) + (f_size % p_degree != 0);
@@ -80,8 +81,6 @@ OutputBuffer thr_mapping(HuffMap &huff_map, const string &file_content, unsigned
         p_degree = f_size;
     }
 
-    // a vector of threads.
-    vector<thread> workers(p_degree);
     // the local mapped vector.
     OutputBuffer of(p_degree);
 
@@ -93,14 +92,11 @@ OutputBuffer thr_mapping(HuffMap &huff_map, const string &file_content, unsigned
             mapper_worker(huff_map, file_content, start, end, i, of);
         };
 
-        workers[i] = thread(pFunction);
+        tp.submit(pFunction);
     }
 
 
-    for (auto i = 0; i < workers.size(); i++) {
-        // waiting for threads
-        workers[i].join();
-    }
+    tp.wait_all();
 
 
     return of;

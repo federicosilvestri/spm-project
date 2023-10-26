@@ -21,26 +21,25 @@ void file_read_worker(const string &input_file, string &buffer, unsigned long st
     fp.close();
 }
 
-string thr_read_file(const string &input_file, unsigned int p_degree) {
+string thr_read_file(const string &input_file, SuperThreadPool &thread_pool) {
     // compute the file size
     auto f_size = file_size(input_file);
     // create new large buffer that contains all file inside the memory (memory expensive operation)
     string data(f_size, '\0');
     // slit the file into the fairest number possible, rounding to next value.
-    size_t chunk_size = f_size / p_degree + (f_size % p_degree != 0);
+    size_t chunk_size = f_size / thread_pool.get_nw() + (f_size % thread_pool.get_nw() != 0);
 
-    vector<thread> threads(p_degree);
-    // spawning threads
-    for (auto i = 0; i < p_degree; i++) {
+    // pushing threads
+    for (auto i = 0; i < thread_pool.get_nw(); i++) {
         auto start = i * chunk_size; // the start position
         auto end = min(f_size, start + chunk_size); // the minimum between the file size and
-        threads[i] = thread(file_read_worker, input_file, ref(data), start, end);
+        auto pFunction = [&input_file, &data, start, end]() {
+            file_read_worker(input_file, ref(data), start, end);
+        };
+        thread_pool.submit(pFunction);
     }
 
-    // joining the threads
-    for (auto &t: threads) {
-        t.join();
-    }
+    thread_pool.wait_all();
 
     return data;
 }

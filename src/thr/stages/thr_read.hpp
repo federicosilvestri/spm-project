@@ -5,8 +5,9 @@
 #ifndef SPM_PROJECT_THR_READ_HPP
 #define SPM_PROJECT_THR_READ_HPP
 #include "string"
+#include "../../utils/thread_pool.hpp"
 
-// TODO: comment
-std::string thr_read_file(const std::string& input_file, unsigned int p_degree);
+
+std::string thr_read_file(const std::string& input_file, SuperThreadPool& thread_pool);
 
 #endif //SPM_PROJECT_THR_READ_HPP

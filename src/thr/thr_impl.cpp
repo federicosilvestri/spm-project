@@ -5,9 +5,10 @@
 #include "thread"
 #include "../utils/my_timer.hpp"
 #include "../utils/logger.hpp"
+#include "../utils/thread_pool.hpp"
 
 // Parallel read
-#include "stages/thr_read.hpp"
+// #include "stages/thr_read.hpp"
 // Sequential read
 #include "../seq/stages/seq_read.hpp"
 #include "../seq/stages/seq_mapping.hpp" // ONLY TEST
@@ -35,6 +36,11 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
     // STAGE 0: READ from file
     timer.start("READ");
     /*
+     * Starting the thread pool inside the timings (to allow the timer to consider the overhead due to threads creation).
+    */
+    auto thread_pool = SuperThreadPool(p_degree);
+
+    /*
      * Two versions available one that is multithreading, and one that is sequential.
      *
      * PARALLEL:
@@ -50,7 +56,7 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 1:
     timer.start("FREQCALC");
-    auto freq_map = thr_compute_frequencies(file_content, p_degree);
+    auto freq_map = thr_compute_frequencies(file_content, thread_pool);
     timer.stop();
 
 
@@ -63,7 +69,7 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 3: Encoding the file into memory
     timer.start("MAP");
-    auto output_buffer = thr_mapping(huff_map, file_content, p_degree);
+    auto output_buffer = thr_mapping(huff_map, file_content, thread_pool);
     timer.stop();
 
     // STAGE 3: Writing into fs

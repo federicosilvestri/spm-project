@@ -57,6 +57,8 @@ if (FF_DISABLE)
             src/thr/stages/thr_read.hpp
             src/seq/stages/seq_read.hpp
             src/seq/stages/seq_read.cpp
+            src/utils/thread_pool.hpp
+            src/utils/thread_pool.cpp
 
     )
 else ()
@@ -97,7 +99,7 @@ else ()
             src/fastflow/stages/ff_freq.cpp
             src/fastflow/stages/ff_mapping.cpp
             src/fastflow/stages/ff_mapping.hpp
-            src/fastflow/stages/ff_transform.cpp
-            src/fastflow/stages/ff_transform.hpp
+            src/utils/thread_pool.hpp
+            src/utils/thread_pool.cpp
     )
 endif ()
