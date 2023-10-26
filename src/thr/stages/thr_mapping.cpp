@@ -102,9 +102,6 @@ OutputBuffer thr_mapping(HuffMap &huff_map, const string &file_content, unsigned
         workers[i].join();
     }
 
-    for (auto &p: of.chunk_info) {
-        cout << "SIZE=" << p << endl;
-    }
 
     return of;
 }
