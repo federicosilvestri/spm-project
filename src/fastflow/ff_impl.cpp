@@ -33,13 +33,13 @@ void ff_impl(const string &file_input, const string &file_output, int p_degree, 
     timer.stop();
 
     timer.start("MAP");
-//    auto output_buff =
+    auto output_buffer = ff_mapping(huff_map, file_content, p_degree);
     timer.stop();
 
 
     // STAGE 3: Writing into fs
     timer.start("WRITE");
-//    write_compressed_file(output_buffer, file_output);
+    write_compressed_file(output_buffer, file_output);
     timer.stop();
 
 
