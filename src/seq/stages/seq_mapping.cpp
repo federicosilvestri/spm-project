@@ -19,7 +19,7 @@ string seq_mapping(HuffMap &huff_map, const string &file_content) {
     }
 
     // padding
-    auto oct_diff = 8 - (mapped.size() % 8);
+    auto oct_diff = (8 - mapped.size() % 8);
     if (oct_diff > 0) {
         mapped += string(oct_diff, '0');
     }

@@ -27,7 +27,7 @@ std::string ff_mapping(HuffMap &huff_map, const std::string &file_content, unsig
             }
     );
 
-    auto padding = string(8 - (mapped.size() % 8), '0');
+    auto padding = string((mapped.size() % 8), '0');
     mapped += padding;
     return mapped;
 }

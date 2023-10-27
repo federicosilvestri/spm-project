@@ -17,6 +17,8 @@
 
 using namespace std;
 
+SuperThreadPool tp(STATIC_PARALLELISM_DEGREE);
+
 
 int test_functional_reading(string &file_input) {
     string content1 = thr_read_file(file_input, STATIC_PARALLELISM_DEGREE);
@@ -30,7 +32,7 @@ int test_functional_reading(string &file_input) {
 int test_functional_calcfreq(string &file_input) {
     string content = seq_read_file(file_input);
     auto m1 = seq_compute_frequencies(content);
-    auto m2 = thr_compute_frequencies(content, STATIC_PARALLELISM_DEGREE);
+    auto m2 = thr_compute_frequencies(content, tp);
 
     CHK_TRUE(m1.size() == m2.size());
 
@@ -64,7 +66,7 @@ int test_mapping(string &file_input) {
     auto huff_tree = build_huffman_tree(freq_map);
     auto huff_map = build_huffman_map(huff_tree);
     auto mapped_bin = seq_mapping(huff_map, content);
-    auto mapped_bin2 = thr_mapping(huff_map, content, STATIC_PARALLELISM_DEGREE);
+    auto mapped_bin2 = thr_mapping(huff_map, content, tp);
 
     CHK_EQ(mapped_bin.size() % 8, 0);
     CHK_EQ(mapped_bin2.size() % 8, 0);
@@ -79,7 +81,7 @@ int test_transform(string &file_input) {
     auto huff_map = build_huffman_map(huff_tree);
     auto mapped_bin = seq_mapping(huff_map, content);
     auto char_seq = seq_transform(mapped_bin);
-    auto char_thr = thr_transform(mapped_bin, STATIC_PARALLELISM_DEGREE);
+    auto char_thr = thr_transform(mapped_bin, tp);
 
     CHK_EQ(char_seq.str(), char_thr.str());
     return 0;

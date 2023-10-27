@@ -11,7 +11,7 @@ rm -rf build && mkdir build
 cd build
 
 # use cMake tool to create the main makefile
-cmake .. -DFF_DISABLE=ON -DCMAKE_BUILD_TYPE=Release
+cmake .. -DFF_DISABLE=OFF -DCMAKE_BUILD_TYPE=Release
 
 # start the compilation
 make

@@ -39,7 +39,6 @@ void seq_impl(const string &file_input, const string &file_output, bool enable_m
     auto mapped_string = seq_mapping(huff_map, file_content);
     timer.stop();
 
-
     // STAGE 3: Transform the binary string to ascii
     timer.start("TRANSFORM");
     auto stream = seq_transform(mapped_string);

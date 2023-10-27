@@ -5,6 +5,7 @@
 #include "thread"
 #include "../utils/my_timer.hpp"
 #include "../utils/logger.hpp"
+#include "../utils/thread_pool.hpp"
 
 // Parallel read
 #include "stages/thr_read.hpp"
@@ -35,13 +36,15 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 0: reading
     timer.start("READ");
+    // Starting the thread pool
+    auto tp = SuperThreadPool(p_degree);
 //    string file_content = thr_read_file(file_input, p_degree);
     string file_content = seq_read_file(file_input);
     timer.stop();
 
 
     timer.start("FREQCALC");
-    auto freq_map = thr_compute_frequencies(file_content, p_degree);
+    auto freq_map = thr_compute_frequencies(file_content, tp);
     timer.stop();
 
 
@@ -54,13 +57,13 @@ void thr_impl(const std::string &file_input, const std::string &file_output, int
 
     // STAGE 2: Encoding the file into memory
     timer.start("MAP");
-    auto mapped_stream = thr_mapping(huff_map, file_content, p_degree);
+    auto mapped_stream = thr_mapping(huff_map, file_content, tp);
     timer.stop();
 
 
     // STAGE 3: transform the EncodedChunk to ascii
     timer.start("TRANSFORM");
-    auto char_stream = thr_transform(mapped_stream, p_degree);
+    auto char_stream = thr_transform(mapped_stream, tp);
     timer.stop();
 
     // STAGE 4: Writing into fs

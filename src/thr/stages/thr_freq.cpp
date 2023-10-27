@@ -32,7 +32,7 @@ reduce_two_maps(FrequencyMap &m1, FrequencyMap &m2) {
 }
 
 
-FrequencyMap reduce_maps(vector<FrequencyMap> &maps) {
+FrequencyMap reduce_maps(vector<FrequencyMap> &maps, SuperThreadPool &tp) {
     if (maps.empty()) {
         throw invalid_argument("maps size cannot be empty!");
     }
@@ -43,29 +43,27 @@ FrequencyMap reduce_maps(vector<FrequencyMap> &maps) {
     // compute adjusted size of vector of partially reduced maps.
     auto v_size = (maps.size() % 2 == 0) ? maps.size() : maps.size() - 1;
     // v_size / 2 is the number of possible threads that will be spawned.
-    vector<thread> workers(v_size / 2);
     auto reduced_size = (v_size / 2) + (maps.size() % 2 != 0);
     vector<FrequencyMap> reduced(reduced_size);
 
     for (int i = 0, j = 0; i < v_size; i += 2, j++) {
         auto pFunction = [&reduced, i, j, &maps]() { reduced[j] = reduce_two_maps(maps[i], ref(maps[i + 1])); };
-        workers[j] = thread(pFunction);
+        tp.submit(pFunction);
     }
 
-    // add the results of thread inside the reduced vector.
-    for (auto &worker: workers) {
-        worker.join();
-    }
+    // Waiting for workers
+    tp.wait_all();
+
 
     if (maps.size() % 2 != 0) {
         reduced[reduced_size - 1] = maps[maps.size() - 1];
     }
 
-    FrequencyMap combined_map = reduce_maps(reduced);
+    FrequencyMap combined_map = reduce_maps(reduced, tp);
     return combined_map;
 }
 
-FrequencyMap thr_compute_frequencies(const string &file_content, unsigned int p_degree) {
+FrequencyMap thr_compute_frequencies(const string &file_content, SuperThreadPool& tp) {
     /*
      * CLASSIC IDEA:
      * Start by splitting file in chunks (arithmetically f_size/p_degree), identified by a couple <start, end> positions.
@@ -77,6 +75,7 @@ FrequencyMap thr_compute_frequencies(const string &file_content, unsigned int p_
      * when threads has finished the work, I merge the hashmaps. (SEQ?)
      *
      */
+    auto p_degree = tp.get_nw();
     unsigned int f_size = file_content.size();
     // adjusting the parallelism, computing chunk size or delta, is the same.
     unsigned int chunk_size = (f_size / p_degree) + (f_size % p_degree != 0);
@@ -86,7 +85,6 @@ FrequencyMap thr_compute_frequencies(const string &file_content, unsigned int p_
         p_degree = f_size;
     }
 
-    vector<thread> workers(p_degree);
     vector<FrequencyMap> local_maps(p_degree);
     for (unsigned int i = 0; i < p_degree; i++) {
         auto start = i * chunk_size;
@@ -94,18 +92,17 @@ FrequencyMap thr_compute_frequencies(const string &file_content, unsigned int p_
         auto pFunction = [&file_content, start, end, &local_maps, i] {
             local_maps[i] = freq_worker(file_content, start, end);
         };
-        workers[i] = thread(pFunction);
+
+        // submit the task
+        tp.submit(pFunction);
     }
 
-    for (unsigned int i = 0; i < p_degree; i++) {
-        // waiting for threads to finish
-        workers[i].join();
-    }
+    // waiting the threads to finish
+    tp.wait_all();
 
     /*
      * Now we have to combine the Hashmaps.
      * We know that combine(HM1, HM2) is a binary operation: we can also use than a divide and conquer algorithm.
-     * TODO: implement it.
      */
 //    FrequencyMap reduced;
 //    for (auto &local_map: local_maps) {
@@ -114,5 +111,5 @@ FrequencyMap thr_compute_frequencies(const string &file_content, unsigned int p_
 //        }
 //    }
 
-    return reduce_maps(local_maps);
+    return reduce_maps(local_maps, tp);
 }

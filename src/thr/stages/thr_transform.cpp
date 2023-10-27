@@ -9,7 +9,8 @@
 
 using namespace std;
 
-void transform_worker(std::string &binary_string, unsigned int begin, unsigned int end, string& ss, unsigned int ss_begin) {
+void
+transform_worker(std::string &binary_string, unsigned int begin, unsigned int end, string &ss, unsigned int ss_begin) {
     for (unsigned int i = begin, j = ss_begin; i < end; i += 8, j += 1) {
         bitset<8> group(binary_string.substr(i, 8));
         char c = (char) (group.to_ulong() & 0xFF);
@@ -18,12 +19,13 @@ void transform_worker(std::string &binary_string, unsigned int begin, unsigned i
 }
 
 
-stringstream thr_transform(string &binary, unsigned int p_degree) {
+stringstream thr_transform(string &binary, SuperThreadPool &tp) {
     /*
      * We define a chunk size for each thread that must be a multiple of 8.
      * For each chunk start a thread and transform the string into encoded ascii string.
      * Finally, merge the result sequentially by inserting the string inside the stringstream.
      */
+    auto p_degree = tp.get_nw();
     unsigned long block_size = binary.size() / 8;
     unsigned long chunk_size = (block_size / p_degree) + (block_size % p_degree != 0);
 
@@ -31,7 +33,6 @@ stringstream thr_transform(string &binary, unsigned int p_degree) {
         throw invalid_argument("Program should be run sequentially");
     }
 
-    vector<thread> workers(p_degree);
     // Preallocate the mapped string
     string mapped(block_size, '\0');
 
@@ -44,13 +45,12 @@ stringstream thr_transform(string &binary, unsigned int p_degree) {
         auto pFunction = [begin, end, ss_begin, &binary, &mapped]() {
             transform_worker(binary, begin, end, mapped, ss_begin);
         };
-        workers[i] = thread(pFunction);
+        // sending task to threadpool
+        tp.submit(pFunction);
     }
 
-    // collecting futures value and merge the result into the stream
-    for (auto &worker: workers) {
-        worker.join();
-    }
+    // Waiting for thread pool
+    tp.wait_all();
 
     stringstream final_stream;
     final_stream << mapped;
