@@ -28,8 +28,8 @@ void ff_impl(const string &file_input, const string &file_output, int p_degree, 
 
     // STAGE 1: Computing Huffman Tree and Huffman Map
     timer.start("HUFFBUILD");
-//    auto huff_tree = build_huffman_tree(f_map);
-//    auto huff_map = build_huffman_map(huff_tree);
+    auto huff_tree = build_huffman_tree(f_map);
+    auto huff_map = build_huffman_map(huff_tree);
     timer.stop();
 
     timer.start("MAP");
