@@ -4,7 +4,6 @@
 
 #ifndef SPM_PROJECT_FF_TRANSFORM_HPP
 #define SPM_PROJECT_FF_TRANSFORM_HPP
-#include "sstream"
 #include "string"
 
 /**
@@ -13,6 +12,6 @@
  * @param p_degree the degree of parallelism
  * @return character stream
  */
-std::stringstream ff_transform(std::string& binary, unsigned int p_degree);
+std::string ff_transform(const std::string& binary, unsigned int p_degree);
 
 #endif //SPM_PROJECT_FF_TRANSFORM_HPP

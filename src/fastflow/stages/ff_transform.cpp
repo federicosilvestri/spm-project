@@ -7,12 +7,12 @@
 #include "bitset"
 using namespace std;
 
-stringstream ff_transform(string &binary, unsigned int p_degree) {
+string ff_transform(const string &binary, unsigned int p_degree) {
     ff::ParallelFor instance(p_degree);
 
     unsigned long block_size = binary.size() / 8;
     unsigned long chunk_size = (block_size / p_degree) + (block_size % p_degree != 0);
-    vector<stringstream> locally_transformed(p_degree);
+    vector<string> locally_transformed(p_degree);
 
     if (chunk_size < 8) {
         throw invalid_argument("Program should be run sequentially");
@@ -30,13 +30,15 @@ stringstream ff_transform(string &binary, unsigned int p_degree) {
                 for (auto j = begin; j < end; j += 8) {
                     bitset<8> group(binary.substr(j, 8));
                     char c = (char) (group.to_ulong() & 0xFF);
-                    locally_transformed[i] << c;
+                    locally_transformed[i] += c;
                 }
             }
     );
-    stringstream reduced_stream;
+
+    string reduced_stream;
+    reduced_stream.reserve(binary.size() / 8);
     for (auto &local : locally_transformed) {
-        reduced_stream << local.rdbuf();
+        reduced_stream += local.rdbuf();
     }
 
     return reduced_stream;
