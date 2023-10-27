@@ -10,7 +10,7 @@
 using namespace std;
 
 void
-transform_worker(std::string &binary_string, unsigned int begin, unsigned int end, string &ss, unsigned int ss_begin) {
+transform_worker(const std::string &binary_string, unsigned int begin, unsigned int end, string &ss, unsigned int ss_begin) {
     for (unsigned int i = begin, j = ss_begin; i < end; i += 8, j += 1) {
         bitset<8> group(binary_string.substr(i, 8));
         char c = (char) (group.to_ulong() & 0xFF);
@@ -19,7 +19,7 @@ transform_worker(std::string &binary_string, unsigned int begin, unsigned int en
 }
 
 
-stringstream thr_transform(string &binary, SuperThreadPool &tp) {
+string thr_transform(const string &binary, SuperThreadPool &tp) {
     /*
      * We define a chunk size for each thread that must be a multiple of 8.
      * For each chunk start a thread and transform the string into encoded ascii string.
@@ -52,8 +52,5 @@ stringstream thr_transform(string &binary, SuperThreadPool &tp) {
     // Waiting for thread pool
     tp.wait_all();
 
-    stringstream final_stream;
-    final_stream << mapped;
-
-    return final_stream;
+    return mapped;
 }

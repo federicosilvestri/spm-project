@@ -6,7 +6,6 @@
 #define SPM_PROJECT_THR_TRANSFORM_HPP
 #include "thr_mapping.hpp"
 #include "../../utils/thread_pool.hpp"
-#include "sstream"
 
 /**
  * @brief Transform stream of binary data into ascii characters.
@@ -14,6 +13,6 @@
  * @param tp Thread Pool
  * @return character stream
  */
-std::stringstream thr_transform(std::string& binary_stream, SuperThreadPool& tp);
+std::string thr_transform(const std::string& binary_stream, SuperThreadPool& tp);
 
 #endif //SPM_PROJECT_THR_TRANSFORM_HPP

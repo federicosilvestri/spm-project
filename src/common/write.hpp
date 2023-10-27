@@ -5,9 +5,12 @@
 #ifndef SPM_PROJECT_WRITE_HPP
 #define SPM_PROJECT_WRITE_HPP
 #include "string"
-#include "sstream"
 
-// TODO COMMENT
-void write_compressed_file(std::stringstream& ascii_stream, const std::string &file_output);
+/**
+ * @brief Write the compressed file
+ * @param ascii_stream the ascii stream to write
+ * @param file_output The output filename.
+ */
+void write_compressed_file(const std::string& ascii_stream, const std::string &file_output);
 
 #endif //SPM_PROJECT_WRITE_HPP

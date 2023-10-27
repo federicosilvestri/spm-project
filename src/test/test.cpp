@@ -83,7 +83,7 @@ int test_transform(string &file_input) {
     auto char_seq = seq_transform(mapped_bin);
     auto char_thr = thr_transform(mapped_bin, tp);
 
-    CHK_EQ(char_seq.str(), char_thr.str());
+    CHK_EQ(char_seq, char_thr);
     return 0;
 }
 
