@@ -25,17 +25,17 @@ void mapper_worker(HuffMap &huff_map, const string &file_content, long start, lo
     // Bits available that can be written inside the buffer.
     unsigned int bits_written;
     // Variable to monitor if there are bits pending to be pushed
-    bool pending_bits;
+    bool pending_bits = false;
 
     for (auto i = start; i <= end; i++) {
         unsigned char read_char = file_content[i];
         HuffCode hc = huff_map.at(read_char);
         total_write += hc.size;
-        pending_bits = false;
 
         if (w_size + hc.size <= WINDOW_SIZE) {
             buff |= (hc.code >> w_size);
             w_size += hc.size;
+            pending_bits = true;
         } else if (w_size + hc.size > WINDOW_SIZE) {
             bits_written = WINDOW_SIZE - w_size;
             bits_to_write = hc.size - bits_written;
@@ -47,6 +47,7 @@ void mapper_worker(HuffMap &huff_map, const string &file_content, long start, lo
             out_buff.buffer[buff_index].push_back(buff);
             buff = 0;
             w_size = 0;
+            pending_bits = false;
         }
 
         if (bits_to_write) {

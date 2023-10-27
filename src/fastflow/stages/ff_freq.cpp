@@ -35,7 +35,7 @@ private:
     /**
      * @briefNumber of workers
      */
-    unsigned int nw;
+    const unsigned int nw;
 
 public:
 
@@ -44,7 +44,7 @@ public:
      * @param file_content constant file content
      * @param nw number of worker (to compute eventually the chunk size)
      */
-    CharacterEmitter(const string &file_content, unsigned int nw) : file_content(file_content), nw(nw) {}
+    CharacterEmitter(const string &file_content, const unsigned int nw) : file_content(file_content), nw(nw) {}
 
     /**
      * Service node.
