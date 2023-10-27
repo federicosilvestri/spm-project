@@ -53,7 +53,7 @@ public:
     FrequencyWorkerTask *svc(FrequencyWorkerTask *) override {
         unsigned long chunk_size = FREQ_CHUNK_SIZE(file_content.size(), nw);
         for (unsigned long i = 0; i < file_content.size(); i += chunk_size) {
-            auto task = new FrequencyWorkerTask(file_content, i, min(i + chunk_size, file_content.size()));
+            auto task = new FrequencyWorkerTask(i, min(i + chunk_size, file_content.size()));
             ff_send_out(task);
         }
         return EOS;
@@ -64,7 +64,14 @@ public:
  * @brief Frequency Mapper Worker.
  */
 class FrequencyMapWorker : public ff_node_t<FrequencyWorkerTask> {
+private:
+    /**
+    * Constant file content.
+    */
+    const std::string &file_content;
 public:
+    explicit FrequencyMapWorker(const string &fileContent) : file_content(fileContent) {}
+
     /**
      * Service: compute the local frequencies
      * @param task the task that contains the work to be done
@@ -72,7 +79,7 @@ public:
      */
     FrequencyWorkerTask *svc(FrequencyWorkerTask *task) override {
         for (unsigned long i = task->start; i < task->stop; i++) {
-            auto c = static_cast<unsigned char>(task->file_content[i]);
+            auto c = static_cast<unsigned char>(file_content[i]);
             (*task->f_map)[c] += 1;
         }
         return task;
@@ -111,7 +118,6 @@ public:
         return GO_ON;
     }
 
-
     FrequencyMap *get_reduced_map() {
         return reduced;
     }
@@ -122,15 +128,13 @@ public:
 FrequencyMap ff_compute_frequencies(const std::string &content, unsigned int p_degree) {
     vector<unique_ptr<ff_node>> workers(p_degree);
     for (int i = 0; i < p_degree; i++) {
-        workers[i] = make_unique<FrequencyMapWorker>();
+        workers[i] = make_unique<FrequencyMapWorker>(content);
     }
     auto emitter = CharacterEmitter(content, p_degree);
     auto collector = FrequencyMapCollector();
-
     ff_Farm<> farm(std::move(workers), emitter, collector);
 
     farm.run_and_wait_end();
-
     return *collector.get_reduced_map();
 
 }

@@ -4,6 +4,7 @@
 
 #ifndef SPM_PROJECT_FF_FREQ_HPP
 #define SPM_PROJECT_FF_FREQ_HPP
+
 #include "../../common/data_types.hpp"
 #include "string"
 
@@ -12,10 +13,6 @@
  */
 class FrequencyWorkerTask {
 public:
-    /**
-     * Constant file content.
-     */
-    const std::string &file_content;
     /**
      * Local frequency map.
      */
@@ -30,8 +27,13 @@ public:
      */
     const unsigned long stop;
 
-    explicit FrequencyWorkerTask(const std::string &f_c, const unsigned long s_start, const unsigned long s_stop)
-            : file_content(f_c), f_map(new FrequencyMap()), start(s_start), stop(s_stop) {
+    /**
+     * Create a new task for Frequency worker
+     * @param s_start Start index
+     * @param s_stop Stop index
+     */
+    explicit FrequencyWorkerTask(const unsigned long s_start, const unsigned long s_stop)
+            : f_map(new FrequencyMap()), start(s_start), stop(s_stop) {
         f_map = new FrequencyMap();
     }
 
