@@ -134,6 +134,7 @@ public:
         }
 
         output_buffer->chunk_info[task->buff_index] = total_write;
+        return task;
     }
 };
 
@@ -141,7 +142,8 @@ OutputBuffer ff_mapping(HuffMap &huff_map, const string &file_content, unsigned 
     auto out_buff = new OutputBuffer(p_degree);
     auto emitter = MapperEmitter(file_content, p_degree);
 
-    vector<unique_ptr<ff_node>> workers(p_degree);
+    vector<unique_ptr < ff_node>>
+    workers(p_degree);
     for (int i = 0; i < p_degree; i++) {
         workers[i] = make_unique<MapperWorker>(file_content, huff_map, out_buff);
     }
