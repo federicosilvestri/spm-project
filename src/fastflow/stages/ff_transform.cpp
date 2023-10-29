@@ -38,7 +38,7 @@ string ff_transform(const string &binary, unsigned int p_degree) {
     string reduced_stream;
     reduced_stream.reserve(binary.size() / 8);
     for (auto &local : locally_transformed) {
-        reduced_stream += local.rdbuf();
+        reduced_stream += local;
     }
 
     return reduced_stream;
