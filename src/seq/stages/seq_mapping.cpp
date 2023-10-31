@@ -1,8 +1,8 @@
 //
 // Created by federicosilvestri on 13/10/23.
 //
+#include <cstdint>
 #include "stdexcept"
-#include "vector"
 #include "seq_mapping.hpp"
 
 using namespace std;
@@ -12,15 +12,10 @@ OutputBuffer seq_mapping(HuffMap &huff_map, const string &file_content) {
      * Maps the content of the file into a binary code.
      */
 
-    // compute the size
-    auto final_size = compute_huffman_size(huff_map);
-    final_size = (final_size / 8) + (final_size % 8 != 0);
-
     // Output buffer
     OutputBuffer ob(1);
-    ob.buffer[0] = vector<WINDOW_TYPE>(final_size);
-    ob.chunk_info[0] = final_size;
-
+    // Total bits written
+    uint64_t total_write = 0;
     // Current Buffer
     unsigned char buff = 0;
     // Window size
@@ -31,12 +26,11 @@ OutputBuffer seq_mapping(HuffMap &huff_map, const string &file_content) {
     unsigned int bits_written;
     // Variable to monitor if there are bits pending to be pushed
     bool pending_bits = false;
-    // Current index
-    unsigned int current_index = 0;
 
     for (auto i = 0L; i < file_content.size(); i++) {
         unsigned char read_char = file_content[i];
         HuffCode hc = huff_map.at(read_char);
+        total_write += hc.size;
 
         if (w_size + hc.size <= WINDOW_SIZE) {
             buff |= (hc.code >> w_size);
@@ -50,7 +44,7 @@ OutputBuffer seq_mapping(HuffMap &huff_map, const string &file_content) {
         }
 
         if (w_size == WINDOW_SIZE) {
-            ob.buffer[0][current_index++] = buff;
+            ob.buffer[0].push_back(buff);
             buff = 0;
             w_size = 0;
             pending_bits = false;
@@ -64,10 +58,13 @@ OutputBuffer seq_mapping(HuffMap &huff_map, const string &file_content) {
         }
 
         if (i == (file_content.size() - 1) && pending_bits) {
-            ob.buffer[0][current_index++] = buff;
+            ob.buffer[0].push_back(buff);
         }
 
     }
+
+    // setting the chunk size info
+    ob.chunk_info[0] = total_write;
 
     return ob;
 }

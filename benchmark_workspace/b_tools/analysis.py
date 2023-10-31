@@ -10,8 +10,11 @@ def compute_performances(file_dim: int):
     ff_file_path = f'results/ff_{file_dim}.csv'
 
     seq_data = get_standardized_measures(seq_file_path)
+    seq_data['TOTAL'] = seq_data['READ'] + seq_data['FREQCALC'] + seq_data['HUFFBUILD'] + seq_data['MAP'] + seq_data['WRITE']
     thr_data = get_standardized_measures(thr_file_path, excluded_columns=['P_DEGREE'])
+    thr_data['TOTAL'] = thr_data['READ'] + thr_data['FREQCALC'] + thr_data['HUFFBUILD'] + thr_data['MAP'] + thr_data['WRITE']
     ff_data = get_standardized_measures(ff_file_path, excluded_columns=['P_DEGREE'])
+    ff_data['TOTAL'] = ff_data['READ'] + ff_data['FREQCALC'] + ff_data['HUFFBUILD'] + ff_data['MAP'] + ff_data['WRITE']
 
     seq_data = seq_data.median()
     thr_data = thr_data.groupby('P_DEGREE', as_index=False).median()

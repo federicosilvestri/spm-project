@@ -16,11 +16,8 @@ void MyTimer::stop() {
 }
 
 void MyTimer::print_timings() {
-    long total = 0;
     for (auto &measure: MyTimer::timings) {
         auto time = measure.second.count();
         std::cout << measure.first << "=" << time << "ns" << std::endl;
-        total += time;
     }
-    std::cout << "TOTAL=" << total << "ns" << std::endl;
 }

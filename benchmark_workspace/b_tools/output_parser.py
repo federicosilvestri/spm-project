@@ -22,7 +22,7 @@ def parse_file(in_file: Path, out_file: Path) -> None:
             data = line.split('=', 2)
             row[data[0]] = data[1].replace('\n', '')
 
-            if line.startswith("TOTAL="):
+            if line.startswith("WRITE="):
                 # end of computation
                 results.append(row)
                 row = {}
